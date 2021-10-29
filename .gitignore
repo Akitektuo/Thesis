@@ -39,3 +39,4 @@ dataSources.local.xml
 httpRequests/
 .gradle/
 build/
+package-lock.json
