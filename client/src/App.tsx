@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.scss';
+import { Button, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { getTextLength } from "./accessor/text-length-accessor";
+import "./App.scss";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	const [text, setText] = useState("");
+	const [response, setResponse] = useState("");
+
+	const sendRequest = async () => {
+		const { content } = await getTextLength(text);
+		setResponse(content);
+	}
+
+	return <div className="container">
+		<TextField value={text} onChange={e => setText(e.target.value)} />
+		<Button onClick={sendRequest}>Send</Button>
+		<Typography>Response: <b>{response}</b></Typography>
+	</div>;
 }
 
 export default App;
