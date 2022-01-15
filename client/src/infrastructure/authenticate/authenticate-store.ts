@@ -6,7 +6,7 @@ class AuthenticateStore {
     public isUserLogged?: boolean = undefined;
 
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this);
     }
 
     public initialize = () => {

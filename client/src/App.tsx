@@ -1,7 +1,10 @@
+import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.scss";
 import { useAuthentication } from "./infrastructure";
+import AuthorizedRoutes from "./pages/routes/authorized-routes";
+import UnauthorizedRoutes from "./pages/routes/unauthorized-routes";
 
 const App = () => {
 	const { initialize, isUserLogged } = useAuthentication();
@@ -16,14 +19,12 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			{isUserLogged ? (
-				// <PageRoutes />
-				<div>Logged</div>
+				<AuthorizedRoutes />
 			) : (
-				<div>Not logged</div>
-				// <AccountRoutes />
+				<UnauthorizedRoutes />
 			)}
 		</BrowserRouter>
 	);
 }
 
-export default App;
+export default observer(App);
