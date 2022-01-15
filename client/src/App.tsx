@@ -1,22 +1,29 @@
-import { Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { getTextLength } from "./accessor/text-length-accessor";
+import { useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
 import "./App.scss";
+import { useAuthentication } from "./infrastructure";
 
 const App = () => {
-	const [text, setText] = useState("");
-	const [response, setResponse] = useState("");
+	const { initialize, isUserLogged } = useAuthentication();
+	
+	useEffect(() => {
+		initialize();
+	}, [initialize]);
 
-	const sendRequest = async () => {
-		const { content } = await getTextLength(text);
-		setResponse(content);
-	}
+	if (isUserLogged === undefined)
+		return null;
 
-	return <div className="container">
-		<TextField value={text} onChange={e => setText(e.target.value)} />
-		<Button onClick={sendRequest}>Send</Button>
-		<Typography>Response: <b>{response}</b></Typography>
-	</div>;
+	return (
+		<BrowserRouter>
+			{isUserLogged ? (
+				// <PageRoutes />
+				<div>Logged</div>
+			) : (
+				<div>Not logged</div>
+				// <AccountRoutes />
+			)}
+		</BrowserRouter>
+	);
 }
 
 export default App;
