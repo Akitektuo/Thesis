@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebApi.Shared;
 using System.Text;
 using WebApi.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi
 {
@@ -37,6 +38,10 @@ namespace WebApi
                     options.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()));
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

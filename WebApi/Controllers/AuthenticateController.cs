@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Threading.Tasks;
+using WebApi.Exceptions;
 using WebApi.Services;
-using WebApi.Shared;
-using WebApi.ViewModels;
 using WebApi.ViewModels.User;
 
 namespace WebApi.Controllers
@@ -22,6 +20,8 @@ namespace WebApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(RegisterUserModel registerUser)
         {
+            ClientException.ValidateModel(ModelState);
+
             await userService.Register(registerUser);
 
             return Ok("User created");
@@ -30,6 +30,8 @@ namespace WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginUser(LoginUserModel loginUser)
         {
+            ClientException.ValidateModel(ModelState);
+
             var loginResult = await userService.Login(loginUser);
 
             if (loginResult == null)

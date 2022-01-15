@@ -24,31 +24,18 @@ namespace WebApi.Middlewares
             response.ContentType = "application/json";
 
             var bodyBeforeNextRequest = response.Body;
-            var memoryStream = new MemoryStream();
+            using var memoryStream = new MemoryStream();
+            
             response.Body = memoryStream;
+            var exception = await ExecuteNextRequest(context);
+            response.Body = bodyBeforeNextRequest;
 
-            try
-            {
-                await nextRequest(context);
+            UpdateStatusCodeForException(response, exception);
 
-                response.Body = bodyBeforeNextRequest;
-                    
-                var resultToWrap = await ObtainResultToWrap(memoryStream);
-                var result = new ResponseModel(response.StatusCode, resultToWrap);
-                await response.WriteAsync(JsonSerializer.Serialize(result));
-            }
-            catch (Exception exception)
-            {
-                if (response.StatusCode == (int)HttpStatusCode.OK)
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+            var responseMessage = exception?.Message ??
+                await ObtainResultToWrap(memoryStream);
 
-                var result = new ResponseModel(response.StatusCode, exception.Message);
-                await response.WriteAsync(JsonSerializer.Serialize(result));
-            }
-            finally
-            {
-                memoryStream.Close();
-            }
+            await WriteResult(response, responseMessage);
         }
 
         private async Task<object> ObtainResultToWrap(MemoryStream fromBody)
@@ -62,6 +49,35 @@ namespace WebApi.Middlewares
             return parsedString.ToInt() ??
                 parsedString.ToBool() as object ??
                 parsedString;
+        }
+
+        private async Task<Exception> ExecuteNextRequest(HttpContext context)
+        {
+            try
+            {
+                await nextRequest(context);
+            }
+            catch (Exception exception)
+            {
+                return exception;
+            }
+
+            return null;
+        }
+
+        private void UpdateStatusCodeForException(
+            HttpResponse response,
+            Exception exception)
+        {
+            if (exception != null && response.StatusCode == (int)HttpStatusCode.OK)
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+        }
+
+        private Task WriteResult(HttpResponse response, object message)
+        {
+            var result = new ResponseModel(response.StatusCode, message);
+
+            return response.WriteAsync(JsonSerializer.Serialize(result));
         }
     }
 }
