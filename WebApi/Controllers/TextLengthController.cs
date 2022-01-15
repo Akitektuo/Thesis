@@ -35,10 +35,7 @@ namespace WebApi.Controllers
                 process.WaitForExit();
             }
 
-            return Ok(new TextAggregator
-            {
-                Content = output
-            });
+            return Ok(output);
         }
     }
 }
