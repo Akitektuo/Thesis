@@ -1,4 +1,4 @@
-const KEY_TOKEN = "token";
+const KEY_TOKEN = "token-analyzer";
 
 export const setToken = (token: string) => localStorage.setItem(KEY_TOKEN, token);
 
