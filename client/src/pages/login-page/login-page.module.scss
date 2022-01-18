@@ -1,4 +1,24 @@
-@import "../../shared/styles/mixins.scss";
+@import "shared/styles/mixins.scss";
 
 @include full-screen-container(true) {
+    .container {
+        @include center-children-horizontally;
+
+        .header {
+            margin: 2rem;
+        }
+
+        .textInput {
+            margin: 1rem;
+            width: Max(20vw, 15rem);
+        }
+
+        .buttonsContainer {
+            $horizontal-margin: 1rem;
+            
+            @include children-space-between;
+            width: calc(100% - #{2 * $horizontal-margin});
+            margin: 2rem $horizontal-margin;
+        }
+    }
 }

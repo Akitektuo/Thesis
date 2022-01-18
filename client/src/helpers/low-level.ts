@@ -1,0 +1,1 @@
+export const readProperty = (object: any, property: string) => object[property];

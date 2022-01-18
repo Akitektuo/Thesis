@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { createContext } from "react";
-import { setToken, getToken, clearToken } from "../../helpers/token-helper";
+import { setToken, getToken, clearToken } from "helpers/token-helper";
 
 class AuthenticateStore {
     public isUserLogged?: boolean = undefined;
