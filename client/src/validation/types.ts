@@ -1,3 +1,5 @@
+import { Rules } from "./rules";
+
 export type NoInfer<T> = [T][T extends any ? 0 : never];
 
 export type AnnotationsMap<T, V, AdditionalFields extends PropertyKey> = {
@@ -5,13 +7,7 @@ export type AnnotationsMap<T, V, AdditionalFields extends PropertyKey> = {
 } & Record<AdditionalFields, V>;
 
 export type RulesType<T extends object, AdditionalKeys extends PropertyKey = never> =
-    AnnotationsMap<T, Rule, NoInfer<AdditionalKeys>>;
-
-export type Rule = Required;
-
-export type Required = {
-    required?: boolean | string;
-}
+    AnnotationsMap<T, Rules, NoInfer<AdditionalKeys>>;
 
 export type ValidationResult = {
     valid: boolean;

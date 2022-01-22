@@ -27,7 +27,6 @@ const TextInput = ({ onChange, onKeyPress, validator, fieldName, ...other }: Pro
 
     const validatorProps: any = validator?.propsForField(fieldName || "") ?? {};
 
-	console.log("update")
     return (
         <TextField
             {...other}

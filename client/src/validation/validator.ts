@@ -1,7 +1,10 @@
 import { debounce } from "@mui/material";
 import { readProperty } from "helpers/low-level";
 import { forceUpdateService } from "infrastructure";
-import { Required, Rule, RulesType, ValidationResult, ValidationState } from "./types";
+import { Rules } from "./rules";
+import { RulesType, ValidationResult, ValidationState } from "./types";
+import validations from "./validations";
+import "shared/extensions";
 
 export default class Validator<T extends object> {
     private model: T
@@ -25,8 +28,8 @@ export default class Validator<T extends object> {
 
         return this.states[fieldName] = {
             shouldShow,
-            ...this.validateValue(readProperty(this.model, fieldName), rule as Rule, fieldName)
-        }
+            ...this.validateValue(readProperty(this.model, fieldName), rule as Rules, fieldName)
+        };
     }
 
     public propsForField = (fieldName: string) => {
@@ -42,16 +45,19 @@ export default class Validator<T extends object> {
             },
             error: !!error,
             helperText: error || ""
-        }
+        };
     }
 
     public isValid = () => Object.values(this.states).every(({ valid }) => valid);
+
+    public isSubmitDisabled = () =>
+        Object.values(this.states).some(({ valid, shouldShow }) => !valid && shouldShow);
 
     public reset = () => {
         for (const [key, rule] of Object.entries(this.rules)) {
             this.states[key] = {
                 shouldShow: false,
-                ...this.validateValue(readProperty(this.model, key), rule as Rule, key)
+                ...this.validateValue(readProperty(this.model, key), rule as Rules, key)
             }
         }
     }
@@ -62,34 +68,17 @@ export default class Validator<T extends object> {
         for (const [key, rule] of Object.entries(this.rules)) {
             this.states[key] = {
                 shouldShow: shouldShowDefault || !!this.states[key]?.shouldShow,
-                ...this.validateValue(readProperty(this.model, key), rule as Rule, key)
+                ...this.validateValue(readProperty(this.model, key), rule as Rules, key)
             }
         }
     }
 
-    private validateValue = (value: any, rules: Rule, fieldName: string): ValidationResult => {
-        const required = this.validateRequired(value, rules, fieldName);
-        if (required)
-            return {
-                valid: false,
-                errorMessage: required
-            };
+    private validateValue = (value: any, rules: Rules, fieldName: string): ValidationResult => {
+        const error = validations.mapFirst(callback => callback(value, rules, fieldName));
 
         return {
-            valid: true,
-            errorMessage: ""
-        }
+            valid: !error,
+            errorMessage: error || ""
+        };
     }
-
-    private validateRequired = (value: any, rule: Required, fieldName: string) => {
-        const required = rule?.required;
-        if (!required)
-            return;
-
-        if (value !== undefined && value !== null && value !== "")
-            return;
-
-        return required === true ? `The field ${fieldName} is required!` : required;
-    }
-
 }

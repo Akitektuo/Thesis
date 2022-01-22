@@ -1,12 +1,22 @@
 import { Button, Container } from "@mui/material";
 import { Text, TextInput } from "components";
+import { useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
 import { LoginPageContext } from "./login-page-store";
 import styles from "./login-page.module.scss";
 
 const LoginPage = () => {
-    const { user, validator, setEmail, setPassword, onSubmit, reset } = useContext(LoginPageContext);
+    useForceUpdate();
+
+    const {
+        user,
+        validator,
+        setEmail,
+        setPassword,
+        onSubmit,
+        reset
+    } = useContext(LoginPageContext);
 
     useEffect(() => reset, [reset]);
 
@@ -33,7 +43,10 @@ const LoginPage = () => {
                 autoComplete="current-password" />
             <div className={styles.buttonsContainer}>
                 <Button>Create account</Button>
-                <Button variant="contained" onClick={onSubmit}>Login</Button>
+                <Button
+                    variant="contained"
+                    onClick={onSubmit}
+                    disabled={validator.isSubmitDisabled()}>Login</Button>
             </div>
         </Container>
     );

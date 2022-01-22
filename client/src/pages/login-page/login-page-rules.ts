@@ -3,7 +3,8 @@ import { RulesType } from "validation";
 
 const LoginPageRules: RulesType<LoginUserType> = {
     email: {
-        required: "The email is required!"
+        required: "The email is required!",
+        email: "This should be formatted as an email!"
     },
     password: {
         required: "The password is required!"
