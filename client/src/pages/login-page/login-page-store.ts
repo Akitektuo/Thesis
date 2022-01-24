@@ -1,3 +1,5 @@
+import { login } from "accessor/authenticate-accessor";
+import { authenticateService, loadingService, toastService } from "infrastructure";
 import { makeAutoObservable } from "mobx";
 import { createContext } from "react";
 import { EMPTY_LOGIN_USER, LoginUserType } from "shared/types/user-types";
@@ -17,8 +19,21 @@ export class LoginPageStore {
 
     public setPassword = (password: string) => this.user.password = password;
 
-    public onSubmit = () => {
+    public onSubmit = async () => {
         this.validator.validate();
+        if (!this.validator.isValid())
+            return
+        
+        loadingService.setLoading(true);
+        try {
+            const token = await login(this.user);
+            authenticateService.setToken(token);
+            toastService.showSuccess("Logged in successfully");
+        } catch (error: any) {
+            toastService.showError(error);
+        } finally {
+            loadingService.setLoading(false);
+        }
     }
 
     public reset = () => {

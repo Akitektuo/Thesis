@@ -1,3 +1,6 @@
+import { getToken } from "helpers/token-helper";
+import { ServerResponse } from "./types";
+
 type httpMethod = "GET" | "POST" | "PUT" | "DELETE"; 
 
 export const httpGet = <T>(url: string, body?: any) => genericFetch<T>("GET", url, body);
@@ -14,20 +17,18 @@ const genericFetch = <T>(method: httpMethod, url: string, body?: any) =>
             const response = await fetch(url, {
                 method,
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${getToken()}`
                 },
                 body: JSON.stringify(body)
             });
             
-            if (response.status / 100 === 2) {
-                try {
-                    resolve(await response.json());
-                } catch {
-                    return undefined;
-                }
-                return;
-            }
-            reject(response.status);
+            const { statusCode, payload } = await response.json() as ServerResponse<T>;
+
+            if (statusCode / 100 === 2)
+                resolve(payload);
+            else
+                reject(payload);
         } catch (exception) {
             reject("Could not connect to the server!");
         }

@@ -77,7 +77,10 @@ namespace WebApi.Middlewares
         {
             var result = new ResponseModel(response.StatusCode, message);
 
-            return response.WriteAsync(JsonSerializer.Serialize(result));
+            return response.WriteAsync(JsonSerializer.Serialize(result, new()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            }));
         }
     }
 }
