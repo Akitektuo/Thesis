@@ -74,7 +74,8 @@ export default class Validator<T extends object> {
     }
 
     private validateValue = (value: any, rules: Rules, fieldName: string): ValidationResult => {
-        const error = validations.mapFirst(callback => callback(value, rules, fieldName));
+        const error = validations.mapFirst(callback =>
+            callback(this.model, value, rules, fieldName));
 
         return {
             valid: !error,

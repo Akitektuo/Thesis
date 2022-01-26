@@ -3,7 +3,8 @@ export type Rules = RequiredRule &
     EmailRule &
     PasswordRule &
     LengthRule &
-    CustomRule;
+    CustomRule &
+    SameAsRule;
 
 export type RequiredRule = {
     required?: string;
@@ -35,7 +36,16 @@ export type LengthRule = {
 
 export type CustomRule = {
     custom?: {
-        callback: (value: any, fieldName: string) => any;
+        callback: (value: any, model: any, fieldName: string) => any;
         message: string | ((result: any) => string | null | undefined); 
+    }
+}
+
+export type SameAsRule = {
+    sameAs?: {
+        reference: string;
+        contains?: boolean;
+        ignoreCase?: boolean;
+        message: string;
     }
 }

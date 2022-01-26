@@ -22,7 +22,7 @@ export class LoginPageStore {
     public onSubmit = async () => {
         this.validator.validate();
         if (!this.validator.isValid())
-            return
+            return;
         
         loadingService.setLoading(true);
         try {
@@ -38,7 +38,7 @@ export class LoginPageStore {
 
     public reset = () => {
         this.user = EMPTY_LOGIN_USER;
-        this.validator.reset();
+        this.validator = makeValidator(this.user, LoginPageRules);
     }
 }
 

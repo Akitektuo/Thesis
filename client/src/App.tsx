@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.scss";
-import { Services, useAuthentication } from "infrastructure";
+import { NavigationService, Services, useAuthentication } from "infrastructure";
 import { AuthorizedRoutes, UnauthorizedRoutes } from "pages/routes";
 
 const App = () => {
@@ -17,6 +17,7 @@ const App = () => {
 
 	return <>
 		<BrowserRouter>
+			<NavigationService />
 			{isUserLogged ? (
 				<AuthorizedRoutes />
 			) : (

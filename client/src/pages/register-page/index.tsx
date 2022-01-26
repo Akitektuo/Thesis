@@ -1,12 +1,12 @@
 import { Button, Container } from "@mui/material";
-import { Text, TextInput } from "components";
 import { navigationService, useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
-import { LoginPageContext } from "./login-page-store";
-import styles from "./login-page.module.scss";
+import { RegisterPageContext } from "./register-page-store";
+import { Text, TextInput } from "components";
+import styles from "./register-page.module.scss";
 
-const LoginPage = () => {
+const RegisterPage = () => {
     useForceUpdate();
 
     const {
@@ -14,15 +14,16 @@ const LoginPage = () => {
         validator,
         setEmail,
         setPassword,
+        setConfirmPassword,
         onSubmit,
         reset
-    } = useContext(LoginPageContext);
+    } = useContext(RegisterPageContext);
 
     useEffect(() => reset, [reset]);
 
     return (
         <Container className={styles.container}>
-            <Text className={styles.header} variant="h3">Login</Text>
+            <Text className={styles.header} variant="h3">Create account</Text>
             <TextInput
                 validator={validator}
                 fieldName="email"
@@ -40,18 +41,27 @@ const LoginPage = () => {
                 value={user.password}
                 onChange={setPassword}
                 type="password"
-                autoComplete="current-password" />
+                autoComplete="new-password" />
+            <TextInput
+                validator={validator}
+                fieldName="confirmPassword"
+                className={styles.textInput}
+                label="Confirm password"
+                value={user.confirmPassword}
+                onChange={setConfirmPassword}
+                type="password"
+                autoComplete="new-password" />
             <div className={styles.buttonsContainer}>
-                <Button onClick={() => navigationService.to("/register")}>
-                    Create account
+                <Button onClick={() => navigationService.to("/login")}>
+                    Already have an account
                 </Button>
                 <Button
                     variant="contained"
                     onClick={onSubmit}
-                    disabled={validator.isSubmitDisabled()}>Login</Button>
+                    disabled={validator.isSubmitDisabled()}>Create account</Button>
             </div>
         </Container>
     );
 }
 
-export default observer(LoginPage);
+export default observer(RegisterPage);

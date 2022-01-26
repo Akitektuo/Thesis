@@ -7,4 +7,4 @@ const URL = `${BASE_URL}authenticate`;
 export const login = (loginUser: LoginUserType) => httpPost<string>(`${URL}/login`, loginUser);
 
 export const register = (registerUser: RegisterUserType) =>
-    httpPost<string>(`${URL}/register`, registerUser);
+    httpPost(`${URL}/register`, registerUser);

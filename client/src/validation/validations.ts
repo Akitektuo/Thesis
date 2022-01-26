@@ -1,7 +1,16 @@
+import { compare } from "helpers/comparison";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "./constants";
-import { CustomRule, EmailRule, LengthRule, PasswordRule, PatternRule, RequiredRule } from "./rules";
+import {
+    CustomRule,
+    EmailRule,
+    LengthRule,
+    PasswordRule,
+    PatternRule,
+    RequiredRule,
+    SameAsRule
+} from "./rules";
 
-const validateRequired = (value: any, rule: RequiredRule, fieldName: string) => {
+const validateRequired = <T>(model: T, value: any, rule: RequiredRule, fieldName: string) => {
     const required = rule?.required;
     if (!required)
         return;
@@ -10,7 +19,7 @@ const validateRequired = (value: any, rule: RequiredRule, fieldName: string) => 
         return required;
 }
 
-const validatePattern = (value: any, rule: PatternRule, fieldName: string) => {
+const validatePattern = <T>(model: T, value: any, rule: PatternRule, fieldName: string) => {
     const pattern = rule?.pattern;
     if (!pattern)
         return;
@@ -19,7 +28,7 @@ const validatePattern = (value: any, rule: PatternRule, fieldName: string) => {
         return pattern.message;
 }
 
-const validateEmail = (value: any, rule: EmailRule, fieldName: string) => {
+const validateEmail = <T>(model: T, value: any, rule: EmailRule, fieldName: string) => {
     const emailMessage = rule?.email;
     if (!emailMessage)
         return;
@@ -28,7 +37,7 @@ const validateEmail = (value: any, rule: EmailRule, fieldName: string) => {
         return emailMessage;
 }
 
-const validatePassword = (value: any, rule: PasswordRule, fieldName: string) => {
+const validatePassword = <T>(model: T, value: any, rule: PasswordRule, fieldName: string) => {
     const passwordMessage = rule?.password;
     if (!passwordMessage)
         return;
@@ -37,7 +46,7 @@ const validatePassword = (value: any, rule: PasswordRule, fieldName: string) => 
         return passwordMessage;
 }
 
-const validateLength = (value: any, rule: LengthRule, fieldName: string) => {
+const validateLength = <T>(model: T, value: any, rule: LengthRule, fieldName: string) => {
     const length = rule?.length;
     if (!length)
         return;
@@ -52,18 +61,31 @@ const validateLength = (value: any, rule: LengthRule, fieldName: string) => {
         return message;
 }
 
-const validateCustom = (value: any, rule: CustomRule, fieldName: string) => {
+const validateCustom = <T>(model: T, value: any, rule: CustomRule, fieldName: string) => {
     const custom = rule?.custom;
     if (!custom)
         return;
 
     const { message, callback } = custom;
-    const result = callback(value, fieldName);
+    const result = callback(value, model, fieldName);
 
     if (message instanceof Function)
         return message(result);
 
     if (result)
+        return message;
+}
+
+const validateSameAs = <T>(model: T, value: any, rule: SameAsRule, fieldName: string) => {
+    const sameAs = rule?.sameAs;
+    if (!sameAs)
+        return;
+
+    const { reference, contains, ignoreCase, message } = sameAs;
+
+    const referenceValue = (model as any)[reference];
+
+    if (!compare(value, referenceValue, contains, ignoreCase))
         return message;
 }
 
@@ -73,7 +95,8 @@ const validations = [
     validateEmail,
     validatePassword,
     validateLength,
-    validateCustom
+    validateCustom,
+    validateSameAs
 ];
 
 const less = (first: any, second: any, inclusive?: boolean) =>

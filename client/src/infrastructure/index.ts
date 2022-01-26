@@ -1,10 +1,12 @@
 import useAuthentication from "./authenticate";
-import { authenticateStore } from "./authenticate/authenticate-store";
 import useForceUpdate from "./force-update";
+import { authenticateStore } from "./authenticate/authenticate-store";
 import { forceUpdateStore } from "./force-update/force-update-store";
 import { loadingOverlayStore } from "./loading-overlay/loading-overlay-store";
-import Services from "./services";
+import { navigationServiceStore } from "./navigation-service/navigation-service-store";
 import { toastServiceStore } from "./toast-service/toast-service-store";
+import Services from "./services";
+import NavigationService from "./navigation-service";
 
 export {
     useAuthentication,
@@ -13,5 +15,7 @@ export {
     toastServiceStore as toastService,
     useForceUpdate,
     forceUpdateStore as forceUpdateService,
-    loadingOverlayStore as loadingService
+    loadingOverlayStore as loadingService,
+    NavigationService,
+    navigationServiceStore as navigationService
 };
