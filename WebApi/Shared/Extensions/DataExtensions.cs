@@ -2,9 +2,9 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace WebApi.Shared
+namespace WebApi.Shared.Extensions
 {
-    public static class Extensions
+    public static class DataExtensions
     {
         public static bool? ToBool(this string fromString)
         {

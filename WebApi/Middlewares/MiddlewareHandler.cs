@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WebApi.Shared;
+using WebApi.Shared.Extensions;
 using WebApi.ViewModels;
 
 namespace WebApi.Middlewares

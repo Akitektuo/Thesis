@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using WebApi.Models;
 using WebApi.ViewModels.User;
 
 namespace WebApi.Services
@@ -8,5 +9,9 @@ namespace WebApi.Services
         Task Register(RegisterUserModel registerUserModel);
 
         Task<string> Login(LoginUserModel loginUserModel);
+
+        Task<User> GetCurrent();
+
+        Task<bool> IsCurrentAdmin();
     }
 }

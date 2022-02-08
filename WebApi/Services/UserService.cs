@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using WebApi.Exceptions;
 using WebApi.Models;
 using WebApi.Shared;
+using WebApi.Shared.Extensions;
 using WebApi.ViewModels.User;
 
 namespace WebApi.Services
@@ -19,11 +21,31 @@ namespace WebApi.Services
     {
         private readonly UserManager<User> userManager;
         private readonly IConfiguration configuration;
+        private readonly IHttpContextAccessor httpAccessor;
 
-        public UserService(UserManager<User> userManager, IConfiguration configuration)
+        public UserService(
+            UserManager<User> userManager,
+            IConfiguration configuration,
+            IHttpContextAccessor httpAccessor)
         {
             this.userManager = userManager;
             this.configuration = configuration;
+            this.httpAccessor = httpAccessor;
+        }
+
+        public async Task<User> GetCurrent()
+        {
+            var userId = httpAccessor.GetUserId();
+            var user = await userManager.FindByIdAsync(userId.ToString());
+
+            return user;
+        }
+
+        public async Task<bool> IsCurrentAdmin()
+        {
+            var currentUser = await GetCurrent();
+
+            return currentUser.IsAdmin;
         }
 
         public async Task<string> Login(LoginUserModel loginUserModel)
