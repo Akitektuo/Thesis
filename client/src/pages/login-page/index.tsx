@@ -1,5 +1,5 @@
 import { Button, Container } from "@mui/material";
-import { Text, TextInput } from "components";
+import { CenterLayout, Text, TextInput } from "components";
 import { navigationService, useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
@@ -21,36 +21,38 @@ const LoginPage = () => {
     useEffect(() => reset, [reset]);
 
     return (
-        <Container className={styles.container}>
-            <Text className={styles.header} variant="h3">Login</Text>
-            <TextInput
-                validator={validator}
-                fieldName="email"
-                className={styles.textInput}
-                label="Email"
-                value={user.email}
-                onChange={setEmail}
-                type="email"
-                autoComplete="email" />
-            <TextInput
-                validator={validator}
-                fieldName="password"
-                className={styles.textInput}
-                label="Password"
-                value={user.password}
-                onChange={setPassword}
-                type="password"
-                autoComplete="current-password" />
-            <div className={styles.buttonsContainer}>
-                <Button onClick={() => navigationService.to("/register")}>
-                    Create account
-                </Button>
-                <Button
-                    variant="contained"
-                    onClick={onSubmit}
-                    disabled={validator.isSubmitDisabled()}>Login</Button>
-            </div>
-        </Container>
+        <CenterLayout>
+            <Container className={styles.container}>
+                <Text className={styles.header} variant="h3">Login</Text>
+                <TextInput
+                    validator={validator}
+                    fieldName="email"
+                    className={styles.textInput}
+                    label="Email"
+                    value={user.email}
+                    onChange={setEmail}
+                    type="email"
+                    autoComplete="email" />
+                <TextInput
+                    validator={validator}
+                    fieldName="password"
+                    className={styles.textInput}
+                    label="Password"
+                    value={user.password}
+                    onChange={setPassword}
+                    type="password"
+                    autoComplete="current-password" />
+                <div className={styles.buttonsContainer}>
+                    <Button onClick={() => navigationService.to("/register")}>
+                        Create account
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={onSubmit}
+                        disabled={validator.isSubmitDisabled()}>Login</Button>
+                </div>
+            </Container>
+        </CenterLayout>
     );
 }
 

@@ -18,16 +18,17 @@ class AuthenticateStore {
 
     public setToken = (token?: string) => {
         // eslint-disable-next-line
-        if (this.isUserLogged = !!token) {
+        if (this.isUserLogged = !!token)
             setToken(token);
-        } else {
+        else
             clearToken();
-        }
+
+        this.fetchAdminStatus();
     }
 
     private fetchAdminStatus = async () => {
         if (!this.isUserLogged)
-            return;
+            return this.isUserAdmin = undefined;
 
         const isUserAdmin = await isAdmin();
         runInAction(() => this.isUserAdmin = isUserAdmin);

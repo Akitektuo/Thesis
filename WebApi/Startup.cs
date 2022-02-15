@@ -64,14 +64,15 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+            app.UseCors();
+
+            app.UseMiddleware<MiddlewareHandler>();
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors();
-            app.UseAuthorization();
             app.UseAuthentication();
-            app.UseMiddleware<MiddlewareHandler>();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -96,6 +97,8 @@ namespace WebApi
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
                     ValidAudience = Configuration[Constants.JwtAudience],
                     ValidIssuer = Configuration[Constants.JwtIssuer],
                     IssuerSigningKey = new SymmetricSecurityKey(
