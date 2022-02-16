@@ -1,7 +1,6 @@
-﻿namespace WebApi.Aggregators
+﻿namespace WebApi.Aggregators;
+
+public class TextAggregator
 {
-    public class TextAggregator
-    {
-        public string Content { get; set; }
-    }
+    public string Content { get; set; }
 }

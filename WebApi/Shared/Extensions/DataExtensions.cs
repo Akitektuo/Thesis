@@ -1,59 +1,54 @@
-﻿using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿namespace WebApi.Shared.Extensions;
 
-namespace WebApi.Shared.Extensions
+public static class DataExtensions
 {
-    public static class DataExtensions
+    public static bool? ToBool(this string fromString)
     {
-        public static bool? ToBool(this string fromString)
+        try
         {
-            try
-            {
-                return bool.Parse(fromString);
-            }
-            catch
-            {
-                return null;
-            }
+            return bool.Parse(fromString);
         }
-
-        public static int? ToInt(this string fromString)
+        catch
         {
-            try
-            {
-                return int.Parse(fromString);
-            }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
+    }
 
-        public static async Task<object> ToObjectAsync(this MemoryStream fromStream)
+    public static int? ToInt(this string fromString)
+    {
+        try
         {
-            try
-            {
-                fromStream.Seek(0, SeekOrigin.Begin);
-                return await JsonSerializer.DeserializeAsync<object>(fromStream);
-            }
-            catch
-            {
-                return null;
-            }
+            return int.Parse(fromString);
         }
-
-        public static async Task<string> ToStringAsync(this MemoryStream fromStream)
+        catch
         {
-            try
-            {
-                fromStream.Seek(0, SeekOrigin.Begin);
-                return await new StreamReader(fromStream).ReadToEndAsync();
-            }
-            catch
-            {
-                return null;
-            }
+            return null;
+        }
+    }
+
+    public static async Task<object> ToObjectAsync(this MemoryStream fromStream)
+    {
+        try
+        {
+            fromStream.Seek(0, SeekOrigin.Begin);
+            return await JsonSerializer.DeserializeAsync<object>(fromStream);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public static async Task<string> ToStringAsync(this MemoryStream fromStream)
+    {
+        try
+        {
+            fromStream.Seek(0, SeekOrigin.Begin);
+            return await new StreamReader(fromStream).ReadToEndAsync();
+        }
+        catch
+        {
+            return null;
         }
     }
 }

@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebApi.Models;
+﻿namespace WebApi.Services;
 
-namespace WebApi.Services
+public interface IBadgeService
 {
-    public interface IBadgeService
-    {
-        Task<List<Badge>> GetAll();
+    Task<List<Badge>> GetAll();
 
-        Task<Badge> Create(Badge badge);
+    Task<Badge> Create(Badge badge);
 
-        Task<Badge> Update(Badge badge);
-    }
+    Task<Badge> Update(Badge badge);
 }

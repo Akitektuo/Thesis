@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace WebApi.ViewModels.User;
 
-namespace WebApi.ViewModels.User
+public class LoginUserModel
 {
-    public class LoginUserModel
-    {
-        [EmailAddress]
-        public string Email { get; set; }
+    [EmailAddress]
+    public string Email { get; set; }
 
-        public string Password { get; set; }
-    }
+    public string Password { get; set; }
 }

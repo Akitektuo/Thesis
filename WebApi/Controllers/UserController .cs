@@ -1,28 +1,22 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using WebApi.Services;
+﻿namespace WebApi.Controllers;
 
-namespace WebApi.Controllers
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class UserController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    public class UserController : ControllerBase
+    private readonly IUserService userService;
+
+    public UserController(IUserService userService)
     {
-        private readonly IUserService userService;
+        this.userService = userService;
+    }
 
-        public UserController(IUserService userService)
-        {
-            this.userService = userService;
-        }
+    [HttpGet("isAdmin")]
+    public async Task<IActionResult> IsUserAdmin()
+    {
+        var result = await userService.IsCurrentAdmin();
 
-        [HttpGet("isAdmin")]
-        public async Task<IActionResult> IsUserAdmin()
-        {
-            var result = await userService.IsCurrentAdmin();
-
-            return Ok(result);
-        }
+        return Ok(result);
     }
 }

@@ -1,43 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using WebApi.Exceptions;
-using WebApi.Services;
-using WebApi.ViewModels.User;
+﻿namespace WebApi.Controllers;
 
-namespace WebApi.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class AuthenticateController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthenticateController : ControllerBase
+    private readonly IUserService userService;
+
+    public AuthenticateController(IUserService userService)
     {
-        private readonly IUserService userService;
+        this.userService = userService;
+    }
 
-        public AuthenticateController(IUserService userService)
-        {
-            this.userService = userService;
-        }
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterUser(RegisterUserModel registerUser)
+    {
+        ClientException.ValidateModel(ModelState);
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterUser(RegisterUserModel registerUser)
-        {
-            ClientException.ValidateModel(ModelState);
+        await userService.Register(registerUser);
 
-            await userService.Register(registerUser);
+        return Ok("User created");
+    }
 
-            return Ok("User created");
-        }
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginUser(LoginUserModel loginUser)
+    {
+        ClientException.ValidateModel(ModelState);
 
-        [HttpPost("login")]
-        public async Task<IActionResult> LoginUser(LoginUserModel loginUser)
-        {
-            ClientException.ValidateModel(ModelState);
+        var loginResult = await userService.Login(loginUser);
 
-            var loginResult = await userService.Login(loginUser);
+        if (loginResult == null)
+            return Unauthorized("Wrong email or password!");
 
-            if (loginResult == null)
-                return Unauthorized("Wrong email or password!");
-
-            return Ok(loginResult);
-        }
+        return Ok(loginResult);
     }
 }

@@ -1,17 +1,12 @@
-﻿using System.Threading.Tasks;
-using WebApi.Models;
-using WebApi.ViewModels.User;
+﻿namespace WebApi.Services;
 
-namespace WebApi.Services
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task Register(RegisterUserModel registerUserModel);
+    Task Register(RegisterUserModel registerUserModel);
 
-        Task<string> Login(LoginUserModel loginUserModel);
+    Task<string> Login(LoginUserModel loginUserModel);
 
-        Task<User> GetCurrent();
+    Task<User> GetCurrent();
 
-        Task<bool> IsCurrentAdmin();
-    }
+    Task<bool> IsCurrentAdmin();
 }

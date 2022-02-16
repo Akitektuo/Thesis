@@ -1,60 +1,66 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApi.Context;
-using WebApi.Exceptions;
-using WebApi.Models;
+﻿namespace WebApi.Services;
 
-namespace WebApi.Services
+public class BadgeService : IBadgeService
 {
-    public class BadgeService : IBadgeService
+    private readonly DataContext context;
+    private readonly IUserService userService;
+
+    public BadgeService(DataContext context, IUserService userService)
     {
-        private readonly DataContext context;
-        private readonly IUserService userService;
+        this.context = context;
+        this.userService = userService;
+    }
 
-        public BadgeService(DataContext context, IUserService userService)
-        {
-            this.context = context;
-            this.userService = userService;
-        }
+    public async Task<Badge> Create(Badge badge)
+    {
+        var isCurrentUserAdmin = await userService.IsCurrentAdmin();
+        if (!isCurrentUserAdmin)
+            throw new ClientException("Forbidden");
 
-        public async Task<Badge> Create(Badge badge)
-        {
-            var isCurrentUserAdmin = await userService.IsCurrentAdmin();
-            if (!isCurrentUserAdmin)
-                throw new ClientException("Forbidden");
+        CheckIfNameIsUnique(badge);
 
-            await context.AddAsync(badge);
-            await context.SaveChangesAsync();
+        await context.AddAsync(badge);
+        await context.SaveChangesAsync();
 
-            return badge;
-        }
+        return badge;
+    }
 
-        public async Task<List<Badge>> GetAll()
-        {
-            var isCurrentUserAdmin = await userService.IsCurrentAdmin();
-            if (!isCurrentUserAdmin)
-                throw new ClientException("Forbidden");
+    public async Task<List<Badge>> GetAll()
+    {
+        var isCurrentUserAdmin = await userService.IsCurrentAdmin();
+        if (!isCurrentUserAdmin)
+            throw new ClientException("Forbidden");
 
-            return context.Badges.ToList();
-        }
+        return context.Badges.ToList();
+    }
 
-        public async Task<Badge> Update(Badge badge)
-        {
-            var isCurrentUserAdmin = await userService.IsCurrentAdmin();
-            if (!isCurrentUserAdmin)
-                throw new ClientException("Forbidden");
+    public async Task<Badge> Update(Badge badge)
+    {
+        var isCurrentUserAdmin = await userService.IsCurrentAdmin();
+        if (!isCurrentUserAdmin)
+            throw new ClientException("Forbidden");
 
-            var existingBadge = await context.Badges.FindAsync(badge.Id);
+        var existingBadge = await context.Badges.FindAsync(badge.Id);
+        if (existingBadge == null)
+            throw new ClientException($"No badge was found with ID '{badge.Id}'");
 
-            existingBadge.Name = badge.Name;
-            existingBadge.Image = badge.Image;
-            existingBadge.Points = badge.Points;
+        CheckIfNameIsUnique(badge);
 
-            context.Update(existingBadge);
-            await context.SaveChangesAsync();
+        existingBadge.Name = badge.Name;
+        existingBadge.Image = badge.Image;
+        existingBadge.Points = badge.Points;
 
-            return badge;
-        }
+        context.Update(existingBadge);
+        await context.SaveChangesAsync();
+
+        return badge;
+    }
+
+    private void CheckIfNameIsUnique(Badge forBadge)
+    {
+        if (context.Badges.Any(badge =>
+            badge.Id != forBadge.Id && badge.Name == forBadge.Name))
+            throw new ClientException(
+                $"A badge with the name of '{forBadge.Name}' already exists!");
     }
 }

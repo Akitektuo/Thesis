@@ -1,36 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using WebApi.Aggregators;
-using WebApi.Shared;
+﻿using System.Diagnostics;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class TextLengthController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TextLengthController : ControllerBase
+    [HttpPost]
+    public IActionResult Get(TextAggregator textAggregator)
     {
-        [HttpPost]
-        public IActionResult Get(TextAggregator textAggregator)
+        var output = "";
+
+        var processInfo = new ProcessStartInfo
         {
-            var output = "";
+            FileName = "cmd.exe",
+            Arguments = $"/C {Constants.Command} \"{textAggregator.Content}\"",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = true,
+        };
 
-            var processInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/C {Constants.Command} \"{textAggregator.Content}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true,
-            };
+        using (var process = Process.Start(processInfo))
+        {
+            output = process.StandardOutput.ReadToEnd();
 
-            using (var process = Process.Start(processInfo))
-            {
-                output = process.StandardOutput.ReadToEnd();
-
-                process.WaitForExit();
-            }
-
-            return Ok(output);
+            process.WaitForExit();
         }
+
+        return Ok(output);
     }
 }
