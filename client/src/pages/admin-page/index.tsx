@@ -25,8 +25,8 @@ const AdminPage = () => {
                     textColor="inherit"
                     value={selectedTab}
                     onChange={(_, value) => setTab(value)}>
-                    {tabs.map(({ label }) => (
-                        <Tab color="inherit" label={label} />
+                    {tabs.map(({ label }, index) => (
+                        <Tab key={index} color="inherit" label={label} />
                     ))}
                 </Tabs>
             </Toolbar>

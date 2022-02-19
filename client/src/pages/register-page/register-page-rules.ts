@@ -1,6 +1,8 @@
 import { RegisterUserType } from "shared/types/user-types";
 import { RulesType } from "validation";
 
+const MINIMUM_PASSWORD_LENGTH = 6;
+
 const RegisterPageRules: RulesType<RegisterUserType> = {
     email: {
         required: "The email is required!",
@@ -10,8 +12,8 @@ const RegisterPageRules: RulesType<RegisterUserType> = {
         required: "The password is required!",
         password: "The password should contain at least one small letter, capital letter, a number and a symbol!",
         length: {
-            min: 6,
-            message: "The password should have at least 6 characters"
+            min: MINIMUM_PASSWORD_LENGTH,
+            message: `The password should have at least ${MINIMUM_PASSWORD_LENGTH} characters!`
         }
     },
     confirmPassword: {

@@ -4,7 +4,8 @@ export type Rules = RequiredRule &
     PasswordRule &
     LengthRule &
     CustomRule &
-    SameAsRule;
+    SameAsRule &
+    RangeRule;
 
 export type RequiredRule = {
     required?: string;
@@ -47,5 +48,14 @@ export type SameAsRule = {
         contains?: boolean;
         ignoreCase?: boolean;
         message: string;
+    }
+}
+
+export type RangeRule = {
+    range?: {
+        min?: number;
+        max?: number;
+        message: string;
+        exclusive?: boolean; 
     }
 }

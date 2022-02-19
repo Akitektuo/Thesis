@@ -1,0 +1,9 @@
+.gridContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    .item {
+        margin: 1rem;
+        cursor: pointer;
+    }
+}

@@ -6,6 +6,7 @@ import {
     LengthRule,
     PasswordRule,
     PatternRule,
+    RangeRule,
     RequiredRule,
     SameAsRule
 } from "./rules";
@@ -89,6 +90,20 @@ const validateSameAs = <T>(model: T, value: any, rule: SameAsRule, fieldName: st
         return message;
 }
 
+const validateRange = <T>(model: T, value: any, rule: RangeRule, fieldName: string) => {
+    const range = rule?.range;
+    if (!range)
+        return;
+
+    const { min, max, exclusive, message } = range;
+
+    if (min !== undefined && less(value, min, exclusive))
+        return message;
+
+    if (max !== undefined && greater(value, max, exclusive))
+        return message;
+}
+
 const validations = [
     validateRequired,
     validatePattern,
@@ -96,7 +111,8 @@ const validations = [
     validatePassword,
     validateLength,
     validateCustom,
-    validateSameAs
+    validateSameAs,
+    validateRange
 ];
 
 const less = (first: any, second: any, inclusive?: boolean) =>

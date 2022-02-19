@@ -8,7 +8,10 @@ interface Props {
     title?: string;
     primaryButtonLabel?: string;
     secondaryButtonLabel?: string;
-    onPrimaryClick?: () => boolean | void;
+    className?: string;
+    contentClassName?: string;
+    isPrimaryDisabled?: boolean;
+    onPrimaryClick?: () => any;
 }
 
 const Dialog = ({
@@ -18,21 +21,24 @@ const Dialog = ({
     children,
     primaryButtonLabel,
     secondaryButtonLabel = "Cancel",
+    className,
+    contentClassName,
+    isPrimaryDisabled,
     onPrimaryClick
 }: PropsWithChildren<Props>) => (
-    <MaterialDialog open={isOpen} onClose={onClose}>
+    <MaterialDialog open={isOpen} onClose={onClose} className={className}>
         {title && (
             <DialogTitle>{title}</DialogTitle>
         )}
         {children && isString(children) ? (
-            <DialogContentText>{children}</DialogContentText>
+            <DialogContentText className={contentClassName}>{children}</DialogContentText>
         ) : (
-            <DialogContent>{children}</DialogContent>
+            <DialogContent className={contentClassName}>{children}</DialogContent>
         )}
         <DialogActions>
             <Button onClick={onClose}>{secondaryButtonLabel}</Button>
             {primaryButtonLabel && (
-                <Button onClick={() => onPrimaryClick?.() && onClose()}>
+                <Button disabled={isPrimaryDisabled} onClick={() => onPrimaryClick?.()}>
                     {primaryButtonLabel}
                 </Button>
             )}
