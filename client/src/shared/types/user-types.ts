@@ -1,3 +1,5 @@
+import { DisplayBadgeType } from "./badge-types";
+
 export interface LoginUserType {
     email: string;
     password: string;
@@ -19,3 +21,15 @@ export const EMPTY_REGISTER_USER: RegisterUserType = {
     password: "",
     confirmPassword: ""
 };
+
+export interface UserDashboardLevelType {
+    level: number;
+    experience: number;
+    levelMinimumExperience: number;
+    levelMaximumExperience: number;
+}
+
+export interface UserDashboardType extends UserDashboardLevelType {
+    email: string;
+    topBadges: DisplayBadgeType[];
+}

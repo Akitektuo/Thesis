@@ -39,4 +39,12 @@ public class BadgesController : ControllerBase
 
         return Ok(allBadges);
     }
+
+    [HttpGet("userAll")]
+    public async Task<IActionResult> GetAllUserBadges()
+    {
+        var allBadges = await badgeService.GetAllForUser();
+
+        return Ok(allBadges);
+    }
 }

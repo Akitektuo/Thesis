@@ -7,16 +7,24 @@ import styles from "./badge-item.module.scss";
 interface Props extends DisplayBadgeType {
     className?: string;
     onClick?: () => void;
+    smaller?: boolean;
 }
 
-const BadgeItem = ({ image, name, points, unlocked, className, onClick }: Props) => {
+const BadgeItem = ({ image, name, points, unlocked, className, smaller, onClick }: Props) => {
     return (
         <div className={classNames(styles.badgeContainer, className)} onClick={onClick}>
             <Paper className={styles.imageBackground}>
-                <Image className={styles.image} src={image} alt={`${name} badge picture`} />
+                <Image
+                    src={image}
+                    alt={`${name} badge picture`}
+                    className={classNames(styles.image, {
+                        [styles.smaller]: smaller
+                    })} />
             </Paper>
             <Text variant="h6" isBold>{name}</Text>
-            <Text><strong>{points}</strong> Points</Text>
+            {!smaller && (
+                <Text><strong>{points}</strong> Points</Text>
+            )}
             {!unlocked && (
                 <div className={styles.lockedOverlay} />
             )}

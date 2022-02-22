@@ -19,4 +19,12 @@ public class UserController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("dashboard")]
+    public async Task<IActionResult> GetUserDashboard()
+    {
+        var result = await userService.GetUserDashbord();
+
+        return Ok(result);
+    }
 }

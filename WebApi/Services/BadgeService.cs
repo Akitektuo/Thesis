@@ -34,6 +34,20 @@ public class BadgeService : IBadgeService
         return context.Badges.ToList();
     }
 
+    public async Task<List<DisplayBadgeModel>> GetAllForUser()
+    {
+        var userWithUnlockedBadges = await userService.GetUserWithBadges();
+        var unlockedBadges = userWithUnlockedBadges.UserBadges;
+
+        var badgesToDisplay = await context.Badges
+            .Select(badge => new DisplayBadgeModel(
+                badge, unlockedBadges.Any(userBadges => userBadges.BadgeId == badge.Id)))
+            .OrderBy(badge => badge.Name)
+            .ThenByDescending(badge => badge.Unlocked)
+            .ToListAsync();
+        return badgesToDisplay;
+    }
+
     public async Task<Badge> Update(Badge badge)
     {
         var isCurrentUserAdmin = await userService.IsCurrentAdmin();

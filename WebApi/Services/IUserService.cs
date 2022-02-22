@@ -6,7 +6,13 @@ public interface IUserService
 
     Task<string> Login(LoginUserModel loginUserModel);
 
+    Guid GetCurrentUserId();
+
     Task<User> GetCurrent();
 
     Task<bool> IsCurrentAdmin();
+
+    Task<User> GetUserWithBadges(bool includeBadges = false);
+
+    Task<UserDashbordModel> GetUserDashbord();
 }

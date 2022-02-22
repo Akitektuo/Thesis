@@ -8,6 +8,9 @@ import Dialog from "./dialog";
 import NumberInput from "./input/number-input";
 import Image from "./image";
 import BadgeItem from "./badge-item";
+import LoadingElement from "./loading-element";
+import LetterAvatar from "./letter-avatar";
+import LevelIndicator from "./level-indicator";
 
 export {
     Text,
@@ -19,5 +22,8 @@ export {
     Dialog,
     NumberInput,
     Image,
-    BadgeItem
+    BadgeItem,
+    LoadingElement,
+    LetterAvatar,
+    LevelIndicator
 }

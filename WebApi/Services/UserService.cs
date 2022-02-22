@@ -7,20 +7,25 @@ public class UserService : IUserService
     private readonly UserManager<User> userManager;
     private readonly IConfiguration configuration;
     private readonly IHttpContextAccessor httpAccessor;
+    private readonly DataContext context;
 
     public UserService(
         UserManager<User> userManager,
         IConfiguration configuration,
-        IHttpContextAccessor httpAccessor)
+        IHttpContextAccessor httpAccessor,
+        DataContext context)
     {
         this.userManager = userManager;
         this.configuration = configuration;
         this.httpAccessor = httpAccessor;
+        this.context = context;
     }
+
+    public Guid GetCurrentUserId() => httpAccessor.GetUserId();
 
     public async Task<User> GetCurrent()
     {
-        var userId = httpAccessor.GetUserId();
+        var userId = GetCurrentUserId();
         var user = await userManager.FindByIdAsync(userId.ToString());
 
         return user;
@@ -86,5 +91,29 @@ public class UserService : IUserService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public async Task<User> GetUserWithBadges(bool includeBadges = false)
+    {
+        var currentUserId = GetCurrentUserId();
+
+        var query = context.Users.Include(user => user.UserBadges);
+        if (!includeBadges)
+            return await query.FirstAsync(user => user.Id == currentUserId);
+
+        return await query.ThenInclude(userBadge => userBadge.Badge)
+            .FirstAsync(user => user.Id == currentUserId);
+    }
+
+    public async Task<UserDashbordModel> GetUserDashbord()
+    {
+        var userWithBadges = await GetUserWithBadges(true);
+
+        var topBadges = userWithBadges.UserBadges
+            .Select(userBadge => new DisplayBadgeModel(userBadge.Badge))
+            .OrderByDescending(badge => badge.Points)
+            .ToList();
+
+        return new UserDashbordModel(userWithBadges, topBadges);
     }
 }

@@ -1,0 +1,8 @@
+$avatar-size: 2em;
+
+div.avatar {
+    text-transform: uppercase;
+    width: $avatar-size;
+    height: $avatar-size;
+    font-size: 4rem;
+}

@@ -1,0 +1,29 @@
+.levelIndicator {
+    min-width: 15rem;
+
+    .progressWrapper {
+        position: relative;
+
+        .progress {
+            height: 1rem;
+            border-radius: 1rem;
+        }
+
+        .currentExperience {
+            position: absolute;
+            top: 0;
+            color: white;
+        }
+    }
+
+    .progressBoundaries {
+        display: flex;
+        justify-content: space-between;
+        font-size: .8rem;
+        margin-top: .2em;
+
+        & > p {
+            font-size: inherit;
+        }
+    }
+}
