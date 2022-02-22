@@ -1,4 +1,7 @@
 .listContainer {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+    overflow: hidden;
+    height: 4rem;
 }
