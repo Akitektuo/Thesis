@@ -1,4 +1,4 @@
-import { PlainBadgeType } from "shared/types/badge-types";
+import { DisplayBadgeType, PlainBadgeType } from "shared/types/badge-types";
 import { BASE_URL } from "./constants";
 import { httpGet, httpPost, httpPut } from "./helper-functions";
 
@@ -9,3 +9,5 @@ export const createBadge = (badge: PlainBadgeType) => httpPost<PlainBadgeType>(U
 export const updateBadge = (badge: PlainBadgeType) => httpPut<PlainBadgeType>(URL, badge);
 
 export const getAllBadges = () => httpGet<PlainBadgeType[]>(`${URL}/all`);
+
+export const getAllBadgesForUser = () => httpGet<DisplayBadgeType[]>(`${URL}/userAll`);

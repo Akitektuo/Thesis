@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import { RegisterPageContext } from "./register-page-store";
 import { CenterLayout, Text, TextInput } from "components";
 import styles from "./register-page.module.scss";
+import { ROUTE_LOGIN } from "pages/routes/constants";
 
 const RegisterPage = () => {
     useForceUpdate();
@@ -53,7 +54,7 @@ const RegisterPage = () => {
                     type="password"
                     autoComplete="new-password" />
                 <div className={styles.buttonsContainer}>
-                    <Button onClick={() => navigationService.to("/login")}>
+                    <Button onClick={() => navigationService.to(ROUTE_LOGIN)}>
                         Already have an account
                     </Button>
                     <Button

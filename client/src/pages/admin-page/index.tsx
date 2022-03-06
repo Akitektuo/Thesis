@@ -5,6 +5,7 @@ import { AdminPageContext } from "./admin-page-store";
 import tabs from "./tabs";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router";
+import { ROUTE_INDEX } from "pages/routes/constants";
 
 const AdminPage = () => {
     const navigate = useNavigate();
@@ -17,7 +18,11 @@ const AdminPage = () => {
     return <>
         <AppBar position="fixed">
             <Toolbar variant="dense">
-                <IconButton color="inherit" size="small" onClick={() => navigate("/")}>
+                <IconButton
+                    title="Back"
+                    color="inherit"
+                    size="small"
+                    onClick={() => navigate(ROUTE_INDEX)}>
                     <ArrowBackIcon />
                 </IconButton>
                 <Tabs

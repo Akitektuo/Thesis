@@ -1,6 +1,7 @@
 import { register } from "accessor/authenticate-accessor";
 import { loadingService, navigationService, toastService } from "infrastructure";
 import { makeAutoObservable } from "mobx";
+import { ROUTE_LOGIN } from "pages/routes/constants";
 import { createContext } from "react";
 import { EMPTY_REGISTER_USER, LoginUserType } from "shared/types/user-types";
 import { makeValidator, Validator } from "validation";
@@ -31,7 +32,7 @@ export class RegisterPageStore {
         try {
             await register(this.user);
             toastService.showSuccess("Registered successfully");
-            navigationService.to("/login");
+            navigationService.to(ROUTE_LOGIN);
         } catch (error: any) {
             toastService.showError(error);
         } finally {

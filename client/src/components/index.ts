@@ -11,6 +11,8 @@ import BadgeItem from "./badge-item";
 import LoadingElement from "./loading-element";
 import LetterAvatar from "./letter-avatar";
 import LevelIndicator from "./level-indicator";
+import Header from "./header";
+import IconButton from "./icon-button";
 
 export {
     Text,
@@ -25,5 +27,7 @@ export {
     BadgeItem,
     LoadingElement,
     LetterAvatar,
-    LevelIndicator
+    LevelIndicator,
+    Header,
+    IconButton
 }

@@ -1,6 +1,13 @@
 import { Button, Paper } from "@mui/material";
 import classNames from "classnames";
-import { LetterAvatar, LevelIndicator, LoadingElement, LogoutButton, Text } from "components";
+import {
+    IconButton,
+    LetterAvatar,
+    LevelIndicator,
+    LoadingElement,
+    LogoutButton,
+    Text
+} from "components";
 import { useAuthentication } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
@@ -9,6 +16,8 @@ import { DisplayBadgeType } from "shared/types/badge-types";
 import BadgeList from "./badge-list";
 import { UserDashboardContext } from "./user-dashboard-store";
 import styles from "./user-dashboard.module.scss";
+import AdminPanelIcon from "@mui/icons-material/AdminPanelSettingsSharp";
+import { ROUTE_ADMIN, ROUTE_BADGES } from "pages/routes/constants";
 
 interface Props {
     className?: string;
@@ -66,11 +75,23 @@ const UserDashBoard = ({ className }: Props) => {
                 <div className={styles.badgesAndActions}>
                     <BadgeList badges={badges} />
                     <div className={styles.actions}>
-                        <Button variant="outlined">See all</Button>
-                        {isUserAdmin && (
-                            <Button onClick={() => navigate("/admin")}>Admin page</Button>
-                        )}
-                        <LogoutButton />
+                        <Button
+                            variant="outlined"
+                            className={styles.actionSeeAll}
+                            onClick={() => navigate(ROUTE_BADGES)}>
+                            See all
+                        </Button>
+                        <div className={styles.accountActions}>
+                            <LogoutButton />
+                            {isUserAdmin && (
+                                <IconButton
+                                    title="Admin page"
+                                    color="primary"
+                                    onClick={() => navigate(ROUTE_ADMIN)}>
+                                    <AdminPanelIcon />
+                                </IconButton>
+                            )}
+                        </div>
                     </div>
                 </div>
             </> : (

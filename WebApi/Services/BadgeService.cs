@@ -39,13 +39,13 @@ public class BadgeService : IBadgeService
         var userWithUnlockedBadges = await userService.GetUserWithBadges();
         var unlockedBadges = userWithUnlockedBadges.UserBadges;
 
-        var badgesToDisplay = await context.Badges
-            .Select(badge => new DisplayBadgeModel(
+        var allBadges = await context.Badges.ToListAsync();
+
+        return allBadges.Select(badge => new DisplayBadgeModel(
                 badge, unlockedBadges.Any(userBadges => userBadges.BadgeId == badge.Id)))
             .OrderBy(badge => badge.Name)
             .ThenByDescending(badge => badge.Unlocked)
-            .ToListAsync();
-        return badgesToDisplay;
+            .ToList();
     }
 
     public async Task<Badge> Update(Badge badge)

@@ -2,6 +2,7 @@ import { Button, Container } from "@mui/material";
 import { CenterLayout, Text, TextInput } from "components";
 import { navigationService, useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
+import { ROUTE_REGISTER } from "pages/routes/constants";
 import { useContext, useEffect } from "react";
 import { LoginPageContext } from "./login-page-store";
 import styles from "./login-page.module.scss";
@@ -43,7 +44,7 @@ const LoginPage = () => {
                     type="password"
                     autoComplete="current-password" />
                 <div className={styles.buttonsContainer}>
-                    <Button onClick={() => navigationService.to("/register")}>
+                    <Button onClick={() => navigationService.to(ROUTE_REGISTER)}>
                         Create account
                     </Button>
                     <Button
