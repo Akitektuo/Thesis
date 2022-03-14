@@ -39,6 +39,7 @@ public class Startup
 
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IBadgeService, BadgeService>();
+        services.AddTransient<ICourseService, CourseService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

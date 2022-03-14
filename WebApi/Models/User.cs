@@ -7,4 +7,6 @@ public class User : IdentityUser<Guid>
     public bool IsAdmin { get; set; }
 
     public virtual ICollection<UserBadge> UserBadges { get; set; }
+
+    public virtual ICollection<UserCourse> UserCourses { get; set; }
 }

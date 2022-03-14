@@ -31,7 +31,8 @@ public class BadgeService : IBadgeService
         if (!isCurrentUserAdmin)
             throw new ClientException("Forbidden");
 
-        return context.Badges.ToList();
+        var allBadges = await context.Badges.ToListAsync();
+        return allBadges;
     }
 
     public async Task<List<DisplayBadgeModel>> GetAllForUser()
