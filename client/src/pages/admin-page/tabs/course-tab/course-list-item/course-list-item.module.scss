@@ -1,0 +1,19 @@
+@import "shared/styles/colors.scss";
+
+.container {
+    cursor: pointer;
+    transition: all .3s;
+
+    &.highlight {
+        background-color: $primary-light-transparent;
+    }
+
+    .image {
+        width: 10rem;
+        height: 10rem;
+    }
+    
+    .name {
+        padding-left: 1em;
+    }
+}
