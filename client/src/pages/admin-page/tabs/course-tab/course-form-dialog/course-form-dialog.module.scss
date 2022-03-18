@@ -1,0 +1,12 @@
+.dialog :global(.MuiDialog-paper) {
+    min-width: 50vw;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+    
+        .input {
+            margin: .5rem 0;
+        }
+    }
+}

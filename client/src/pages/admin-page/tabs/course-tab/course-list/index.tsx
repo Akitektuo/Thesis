@@ -9,9 +9,10 @@ import { PlainCourseType } from "shared/types/course-types";
 interface Props {
     highlightCourses?: (course: PlainCourseType) => boolean;
     onClick?: (id: string) => void;
+    onClickEdit?: (course: PlainCourseType) => void;
 }
 
-const CourseList = ({ highlightCourses, onClick }: Props) => {
+const CourseList = ({ highlightCourses, onClick, onClickEdit }: Props) => {
     const { courses, fetchCourses } = useContext(CourseListContext);
 
     useEffect(() => {
@@ -26,6 +27,7 @@ const CourseList = ({ highlightCourses, onClick }: Props) => {
                     showDivider={!!index}
                     highlight={highlightCourses?.(course)}
                     onClick={onClick}
+                    onClickEdit={() => onClickEdit?.(course)}
                     {...course} />
             ))}
         </List>

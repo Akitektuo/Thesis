@@ -1,17 +1,8 @@
 import { getAllCourses } from "accessor/course-accessor";
+import { loadingService } from "infrastructure";
 import { makeAutoObservable, runInAction } from "mobx";
 import { createContext } from "react";
 import { PlainCourseType } from "shared/types/course-types";
-
-const courseExample = [{
-    id: "0",
-    name: "Test",
-    image: "https://www.testim.io/wp-content/uploads/2019/11/Testim-What-is-a-Test-Environment_-A-Guide-to-Managing-Your-Testing-A.png"
-}, {
-    id: "1",
-    name: "Other Test",
-    image: "https://i0.wp.com/unibuc.ro/wp-content/uploads/2020/01/cazare.jpg?resize=700%2C480&ssl=1"
-}]
 
 export class CourseListStore {
     public courses: PlainCourseType[] = [];
@@ -21,9 +12,18 @@ export class CourseListStore {
     }
 
     public fetchCourses = async () => {
+        loadingService.setLoading(true);
+
         const courses = await getAllCourses();
-        runInAction(() => this.courses = courseExample);
+        runInAction(() => this.courses = courses);
+        
+        loadingService.setLoading(false);
     }
+
+    public addCourse = (course: PlainCourseType) => this.courses.push(course);
+
+    public updateCourse = (course: PlainCourseType) =>
+        this.courses.update(course, ({ id }) => id === course.id);
 }
 
 export const courseListStore = new CourseListStore();
