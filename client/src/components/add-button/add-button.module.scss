@@ -1,5 +1,17 @@
+$spacing: 2rem;
+$button-size: $spacing + 4rem;
+
 button.addButton {
     position: fixed;
-    right: 2rem;
-    bottom: 2rem;
+    right: $spacing;
+    bottom: $spacing;
+}
+
+.expandContainer {
+    position: fixed;
+    right: $spacing;
+    bottom: $button-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

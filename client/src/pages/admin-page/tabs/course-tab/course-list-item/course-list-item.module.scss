@@ -8,6 +8,14 @@
         background-color: $primary-light-transparent;
     }
 
+    &:hover .editButton {
+        display: inline-flex;
+    }
+
+    .editButton {
+        display: none;
+    }
+
     .image {
         width: 10rem;
         height: 10rem;

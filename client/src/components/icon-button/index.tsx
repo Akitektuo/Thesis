@@ -6,15 +6,34 @@ interface Props {
     title?: string;
     color?: IconButtonColor;
     size?: IconButtonSize;
+    className?: string;
     onClick?: () => void;
 }
 
-const IconButton = ({ title = "", color, size, children, onClick }: PropsWithChildren<Props>) => (
-    <Tooltip title={title}>
-        <MaterialIconButton color={color} size={size} onClick={onClick}>
-            {children}
-        </MaterialIconButton>
-    </Tooltip>
-);
+const IconButton = ({
+    title = "",
+    color,
+    size,
+    className,
+    children,
+    onClick
+}: PropsWithChildren<Props>) => {
+    const handleClick = (event: any) => {
+        event.stopPropagation();
+        onClick?.();
+    }
+
+    return (
+        <Tooltip title={title}>
+            <MaterialIconButton
+                className={className}
+                color={color}
+                size={size}
+                onClick={handleClick}>
+                {children}
+            </MaterialIconButton>
+        </Tooltip>
+    );
+}
 
 export default IconButton;
