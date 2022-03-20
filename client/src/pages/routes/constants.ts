@@ -5,3 +5,4 @@ export const ROUTE_REGISTER = "/register";
 
 export const ROUTE_ADMIN = "/admin";
 export const ROUTE_BADGES = "/badges";
+export const ROUTE_COURSE = "/course";
