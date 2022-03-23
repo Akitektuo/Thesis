@@ -15,4 +15,6 @@ public interface IUserService
     Task<User> GetUserWithBadges(bool includeBadges = false);
 
     Task<UserDashbordModel> GetUserDashbord();
+
+    Task EnsureCurrentIsAdmin();
 }

@@ -116,4 +116,11 @@ public class UserService : IUserService
 
         return new UserDashbordModel(userWithBadges, topBadges);
     }
+
+    public async Task EnsureCurrentIsAdmin()
+    {
+        var isCurrentUserAdmin = await IsCurrentAdmin();
+        if (!isCurrentUserAdmin)
+            throw new ClientException("Forbidden");
+    }
 }

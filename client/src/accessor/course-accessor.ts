@@ -11,3 +11,5 @@ export const updateCourse = (course: PlainCourseType) => httpPut<PlainCourseType
 export const getAllCourses = () => httpGet<PlainCourseType[]>(`${URL}/all`);
 
 export const getAllCoursesForUser = () => httpGet<DisplayCourseType[]>(`${URL}/userAll`);
+
+export const getCourse = (id: string) => httpGet<any>(`${URL}/${id}`);

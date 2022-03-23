@@ -1,4 +1,4 @@
-﻿namespace WebApi.ViewModels;
+﻿namespace WebApi.ViewModels.Courses;
 
 public class DisplayCourseModel
 {
@@ -18,13 +18,16 @@ public class DisplayCourseModel
     {
     }
 
-    public DisplayCourseModel(Course course)
+    public DisplayCourseModel(
+        Course course,
+        Tuple<int, int> completedAndTotalCHapters,
+        int availablePoints)
     {
         Id = course.Id;
         Name = course.Name;
         Image = course.Image;
-        AvailablePoints = 0;
-        TotalChapters = 0;
-        CompletedChapters = 0;
+        CompletedChapters = completedAndTotalCHapters.Item1;
+        TotalChapters = completedAndTotalCHapters.Item2;
+        AvailablePoints = availablePoints;
     }
 }

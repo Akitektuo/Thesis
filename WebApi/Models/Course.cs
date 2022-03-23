@@ -7,4 +7,6 @@ public class Course
     public string Name { get; set; }
 
     public string Image { get; set; }
+
+    public virtual ICollection<Chapter> Chapters { get; set; }
 }

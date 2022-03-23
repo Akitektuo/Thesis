@@ -28,3 +28,4 @@ global using WebApi.Shared;
 global using WebApi.Shared.Extensions;
 global using WebApi.ViewModels;
 global using WebApi.ViewModels.User;
+global using WebApi.ViewModels.Courses;

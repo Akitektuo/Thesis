@@ -13,9 +13,7 @@ public class BadgeService : IBadgeService
 
     public async Task<Badge> Create(Badge badge)
     {
-        var isCurrentUserAdmin = await userService.IsCurrentAdmin();
-        if (!isCurrentUserAdmin)
-            throw new ClientException("Forbidden");
+        await userService.EnsureCurrentIsAdmin();
 
         CheckIfNameIsUnique(badge);
 
@@ -27,9 +25,7 @@ public class BadgeService : IBadgeService
 
     public async Task<List<Badge>> GetAll()
     {
-        var isCurrentUserAdmin = await userService.IsCurrentAdmin();
-        if (!isCurrentUserAdmin)
-            throw new ClientException("Forbidden");
+        await userService.EnsureCurrentIsAdmin();
 
         var allBadges = await context.Badges.ToListAsync();
         return allBadges;
@@ -51,9 +47,7 @@ public class BadgeService : IBadgeService
 
     public async Task<Badge> Update(Badge badge)
     {
-        var isCurrentUserAdmin = await userService.IsCurrentAdmin();
-        if (!isCurrentUserAdmin)
-            throw new ClientException("Forbidden");
+        await userService.EnsureCurrentIsAdmin();
 
         var existingBadge = await context.Badges.FindAsync(badge.Id);
         if (existingBadge == null)

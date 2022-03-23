@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Context;
 
@@ -11,9 +12,10 @@ using WebApi.Context;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220322200827_AddChapters")]
+    partial class AddChapters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,7 +331,7 @@ namespace WebApi.Migrations
 
                     b.HasKey("UserId", "ChapterId");
 
-                    b.ToTable("UserChapters");
+                    b.ToTable("UserChapter");
                 });
 
             modelBuilder.Entity("WebApi.Models.UserCourse", b =>
@@ -401,7 +403,7 @@ namespace WebApi.Migrations
             modelBuilder.Entity("WebApi.Models.Chapter", b =>
                 {
                     b.HasOne("WebApi.Models.Course", "Course")
-                        .WithMany("Chapters")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -462,11 +464,6 @@ namespace WebApi.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Course", b =>
-                {
-                    b.Navigation("Chapters");
                 });
 
             modelBuilder.Entity("WebApi.Models.User", b =>

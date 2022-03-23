@@ -47,4 +47,12 @@ public class CoursesController : ControllerBase
 
         return Ok(allCourses);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCourse(Guid id)
+    {
+        var course = await courseService.Get(id);
+
+        return Ok(course);
+    }
 }

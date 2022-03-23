@@ -9,4 +9,6 @@ public interface ICourseService
     Task<Course> Create(Course course);
 
     Task<Course> Update(Course course);
+
+    Task<CourseDetailsModel> Get(Guid id);
 }

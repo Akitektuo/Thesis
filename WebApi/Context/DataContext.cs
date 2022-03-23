@@ -12,6 +12,10 @@ public class DataContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     public DbSet<Course> Courses { get; set; }
 
+    public DbSet<Chapter> Chapters { get; set; }
+
+    public DbSet<UserChapter> UserChapters { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -21,5 +25,8 @@ public class DataContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
         builder.Entity<UserCourse>()
             .HasKey(table => new { table.UserId, table.CourseId });
+
+        builder.Entity<UserChapter>()
+            .HasKey(table => new { table.UserId, table.ChapterId });
     }
 }
