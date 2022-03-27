@@ -1,4 +1,4 @@
-import { DisplayCourseType, PlainCourseType } from "shared/types/course-types";
+import { CourseDetailsType, DisplayCourseType, PlainCourseType } from "shared/types/course-types";
 import { BASE_URL } from "./constants";
 import { httpGet, httpPost, httpPut } from "./helper-functions";
 
@@ -12,4 +12,4 @@ export const getAllCourses = () => httpGet<PlainCourseType[]>(`${URL}/all`);
 
 export const getAllCoursesForUser = () => httpGet<DisplayCourseType[]>(`${URL}/userAll`);
 
-export const getCourse = (id: string) => httpGet<any>(`${URL}/${id}`);
+export const getCourse = (id: string) => httpGet<CourseDetailsType>(`${URL}/${id}`);

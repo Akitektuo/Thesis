@@ -33,3 +33,13 @@ export const toPlainChapter = (from: InputPlainChapterType): PlainChapterType =>
     points: from.points ?? 0,
     level: from.level ?? 0
 })
+
+export interface ChapterNodeType {
+    id: string;
+    name: string;
+    unlocked: boolean;
+    completed: boolean;
+    points: number;
+    level: number;
+    chapters: ChapterNodeType[];
+}
