@@ -10,6 +10,7 @@ import {
     toPlainChapter
 } from "shared/types/chapter-types";
 import { makeValidator, Validator } from "validation";
+import { courseTabStore } from "../../course-tab-store";
 import ChapterFormDialogRules from "./chapter-form-dialog-rules";
 
 export class ChapterFormDialogStore {
@@ -35,6 +36,7 @@ export class ChapterFormDialogStore {
 
     private setChapterEdit = (fromChapter: InputPlainChapterType) => {
         this.chapterEdit = toJS(fromChapter);
+        this.chapterEdit.courseId = courseTabStore.selectedCourse;
         this.validator = makeValidator(this.chapterEdit, ChapterFormDialogRules);
     }
 
@@ -43,6 +45,13 @@ export class ChapterFormDialogStore {
     public setPoints = (points: InputNumber) => this.chapterEdit.points = points;
 
     public setLevel = (level: InputNumber) => this.chapterEdit.level = level;
+
+    public setParentChapter = (parentChapter: string | null) => {
+        if (parentChapter)
+            return this.chapterEdit.parentChapterId = parentChapter;
+        
+        delete this.chapterEdit.parentChapterId;
+    }
 
     public handleSave = async () => {
         this.validator.validate();

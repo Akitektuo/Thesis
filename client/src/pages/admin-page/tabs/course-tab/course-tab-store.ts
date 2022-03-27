@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { createContext } from "react";
 import { PlainChapterType } from "shared/types/chapter-types";
 import { PlainCourseType } from "shared/types/course-types";
+import { chapterListStore } from "./chapter-pane/chapter-list/course-list-store";
 import { courseListStore } from "./course-list/course-list-store";
 
 export class CourseTabStore {
@@ -19,6 +20,7 @@ export class CourseTabStore {
             return;
 
         this.selectedCourse = id;
+        this.selectedChapter = "";
     }
 
     public selectChapter = (id: string) => {
@@ -47,9 +49,9 @@ export class CourseTabStore {
     public openEditChapterDialog = (chapter: PlainChapterType) => this.chapterEdit = chapter;
 
     public onSaveChapter = (chapter: PlainChapterType, isAdd: boolean) => {
-        const action = isAdd ? courseListStore.addCourse : courseListStore.updateCourse;
+        const action = isAdd ? chapterListStore.addChapter : chapterListStore.updateChapter;
 
-        // action(chapter);
+        action(chapter);
     }
 
     public reset = () => {

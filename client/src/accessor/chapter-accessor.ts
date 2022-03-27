@@ -11,7 +11,7 @@ export const updateChapter = (chapter: PlainChapterType) =>
     httpPut<PlainChapterType>(URL, chapter);
 
 export const getAllChapters = (courseId: string) =>
-    httpGet<PlainChapterType[]>(`${URL}/${courseId}`);
+    httpGet<PlainChapterType[]>(`${URL}/allForCourse/${courseId}`);
 
 export const getChapter = (chapterId: string) =>
     httpGet<PlainChapterType>(`${URL}/${chapterId}`);

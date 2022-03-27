@@ -1,0 +1,18 @@
+@import "shared/styles/colors.scss";
+
+.container {
+    cursor: pointer;
+    transition: all .3s;
+
+    &.highlight {
+        background-color: $primary-light-transparent;
+    }
+
+    &:hover .editButton {
+        display: inline-flex;
+    }
+
+    .editButton {
+        display: none;
+    }
+}

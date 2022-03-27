@@ -14,6 +14,7 @@ import ChapterFormDialog from "./chapter-pane/chapter-form-dialog";
 const CourseTab = () => {
     const {
         selectedCourse,
+        selectedChapter,
         courseEdit,
         chapterEdit,
         selectCourse,
@@ -21,6 +22,7 @@ const CourseTab = () => {
         openAddCourseDialog,
         openEditCourseDialog,
         onSaveCourse,
+        selectChapter,
         closeChapterDialog,
         openAddChapterDialog,
         openEditChapterDialog,
@@ -38,7 +40,11 @@ const CourseTab = () => {
                     onClickEdit={openEditCourseDialog}
                     highlightCourses={({ id }) => id === selectedCourse} />
             </div>
-            <ChapterPane />
+            <ChapterPane
+                courseId={selectedCourse}
+                highlightChapter={({ id }) => id === selectedChapter}
+                onClickChapter={selectChapter}
+                onClickChapterEdit={openEditChapterDialog} />
         </div>
         <AddButton>
             {!!selectedCourse && (

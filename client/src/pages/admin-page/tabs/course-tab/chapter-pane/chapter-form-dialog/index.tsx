@@ -1,8 +1,9 @@
-import { Dialog, NumberInput, TextInput } from "components";
+import { Dialog, Dropdown, NumberInput, TextInput, Text } from "components";
 import { useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
 import { PlainChapterType } from "shared/types/chapter-types";
+import { ChapterListContext } from "../chapter-list/course-list-store";
 import { ChapterFormDialogContext } from "./chapter-form-dialog-store";
 import styles from "./chapter-form-dialog.module.scss";
 
@@ -11,6 +12,12 @@ interface Props {
     onSave: (chapter: PlainChapterType, isAdd: boolean) => void;
     onClose: () => void;
 }
+
+const DEFAULT_PARENT_CHAPTER = {
+    value: null,
+    display: <Text variant="subtitle2">No parent</Text>,
+    default: true
+};
 
 const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
     useForceUpdate();
@@ -24,12 +31,24 @@ const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
         setName,
         setPoints,
         setLevel,
+        setParentChapter,
         handleSave
     } = useContext(ChapterFormDialogContext);
+
+    const { chapters } = useContext(ChapterListContext);
 
     useEffect(() => {
         setChapter(chapter);
     }, [chapter, setChapter]);
+
+    const availableParentChapters = [
+        DEFAULT_PARENT_CHAPTER,
+        ...chapters.filter(({ id }) => id !== chapter?.id)
+            .map(({ id, name }) => ({
+                value: id ?? "",
+                display: name
+            }))
+    ];
 
     const emitSave = async () => {
         const result = await handleSave();
@@ -72,6 +91,12 @@ const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
                 label="Level"
                 value={chapterEdit.level}
                 onChange={setLevel} />
+            <Dropdown
+                className={styles.input}
+                label="Parent Chapter"
+                value={chapterEdit.parentChapterId ?? ""}
+                options={availableParentChapters}
+                onChange={setParentChapter} />
         </Dialog>
     );
 }

@@ -13,6 +13,7 @@ import LetterAvatar from "./letter-avatar";
 import LevelIndicator from "./level-indicator";
 import Header from "./header";
 import IconButton from "./icon-button";
+import Dropdown from "./input/dropdown";
 
 export {
     Text,
@@ -29,5 +30,6 @@ export {
     LetterAvatar,
     LevelIndicator,
     Header,
-    IconButton
+    IconButton,
+    Dropdown
 }
