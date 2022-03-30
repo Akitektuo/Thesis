@@ -62,6 +62,7 @@ export class BadgeFormDialogStore {
             return result;
         } catch (error: any) {
             toastService.showError(error);
+            loadingService.setLoading(false);
         }
     }
 }

@@ -94,7 +94,7 @@ public class CourseService : ICourseService
         List<UserChapter> userChapters,
         ICollection<Chapter> chapters)
     {
-        return new(userChapters.Count, chapters.Count);
+        return new(userChapters.Count(userChapter => userChapter.Approved), chapters.Count);
     }
 
     private ChapterNode MapChaptersAsTree(
@@ -118,8 +118,8 @@ public class CourseService : ICourseService
             Unlocked = root.ParentChapterId == null || userChapters.Any(userChapter =>
                 userChapter.ChapterId == root.Id),
             Chapters = chapters.Where(chapter => chapter.ParentChapterId == root.Id)
-            .Select(chapter => MapChaptersAsTree(chapters, userChapters, chapter))
-            .ToList()
+                .Select(chapter => MapChaptersAsTree(chapters, userChapters, chapter))
+                .ToList()
         };
     }
 

@@ -1,0 +1,37 @@
+@import "shared/styles/colors";
+@import "shared/styles/mixins";
+
+.levelContainer {
+    position: relative;
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+
+    .levelText {
+        margin: 0 1em 0 -4em;
+    }
+
+    .chaptersGrid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-grow: 1;
+    }
+
+    .lockedOverlay {
+        position: absolute;
+        @include match-relative-boundaries;
+        background-color: $smoke-less-transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.unlocked {
+            display: none;
+        }
+
+        .lockIcon {
+            font-size: 4rem;
+        }
+    }
+}

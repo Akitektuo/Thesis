@@ -1,0 +1,63 @@
+@import "shared/styles/colors";
+@import "shared/styles/mixins";
+
+$points-indicator-size: 2rem;
+
+.chapterItemContainer {
+    position: relative;
+    margin: 0 .5rem;
+    padding: .5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 1rem;
+
+    &.highlight {
+        animation: background-color-flash 1s ease-in-out 6 alternate;
+    }
+
+    .pointsIndicator {
+        background-color: $primary;
+        color: snow;
+        padding: .5rem;
+        border-radius: 2rem;
+        width: $points-indicator-size;
+        height: $points-indicator-size;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .completedIndicator {
+        background-color: $success;
+        padding: .5rem;
+        border-radius: 2rem;
+        width: $points-indicator-size;
+        height: $points-indicator-size;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lockedOverlay {
+        position: absolute;
+        @include match-relative-boundaries;
+        background-color: $smoke-transparent;
+
+        &.unlocked {
+            display: none;
+        }
+    }
+}
+
+@keyframes background-color-flash {
+    from {
+        background-color: transparent;
+    }
+
+    to {
+        background-color: $primary-light-transparent;
+    } 
+}

@@ -43,3 +43,28 @@ export interface ChapterNodeType {
     level: number;
     chapters: ChapterNodeType[];
 }
+
+export interface ChapterGridItemType {
+    id: string;
+    name: string;
+    unlocked: boolean;
+    completed: boolean;
+    points: number;
+    level: number;
+    previousChapterId?: string;
+    previousChapterName?: string;
+}
+
+export const toGridItem = (
+    from: ChapterNodeType,
+    parent?: ChapterNodeType
+): ChapterGridItemType => ({
+    id: from.id,
+    name: from.name,
+    unlocked: from.unlocked,
+    completed: from.completed,
+    points: from.points,
+    level: from.level,
+    previousChapterId: parent?.id,
+    previousChapterName: parent?.name
+});

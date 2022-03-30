@@ -1,0 +1,1 @@
+export const REQUIRED_EXPERIENCE = [0, 1000, 2000, 3000, 4000];

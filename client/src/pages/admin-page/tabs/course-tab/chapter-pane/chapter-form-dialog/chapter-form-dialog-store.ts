@@ -72,6 +72,7 @@ export class ChapterFormDialogStore {
             return result;
         } catch (error: any) {
             toastService.showError(error);
+            loadingService.setLoading(false);
         }
     }
 }

@@ -8,13 +8,11 @@ import {
     LogoutButton,
     Text
 } from "components";
-import { useAuthentication } from "infrastructure";
+import { useAuthentication, useUserInformation } from "infrastructure";
 import { observer } from "mobx-react";
-import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { DisplayBadgeType } from "shared/types/badge-types";
 import BadgeList from "./badge-list";
-import { UserDashboardContext } from "./user-dashboard-store";
 import styles from "./user-dashboard.module.scss";
 import AdminPanelIcon from "@mui/icons-material/AdminPanelSettingsSharp";
 import { ROUTE_ADMIN, ROUTE_BADGES } from "pages/routes/constants";
@@ -58,11 +56,7 @@ const badges: DisplayBadgeType[] = [{
 const UserDashBoard = ({ className }: Props) => {
     const navigate = useNavigate();
     const { isUserAdmin } = useAuthentication();
-    const { userDashboard, fetchUserDashboard } = useContext(UserDashboardContext);
-
-    useEffect(() => {
-        fetchUserDashboard();
-    }, [fetchUserDashboard]);
+    const userDashboard = useUserInformation();
 
     return (
         <Paper className={classNames(styles.container, className)}>

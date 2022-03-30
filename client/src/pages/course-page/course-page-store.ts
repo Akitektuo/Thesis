@@ -30,6 +30,7 @@ export class CoursePageStore {
 
     private showErrorAndRedirect = (error: string) => {
         toastService.showError(error);
+        loadingService.setLoading(false);
         navigationService.to(ROUTE_INDEX);
     }
 }

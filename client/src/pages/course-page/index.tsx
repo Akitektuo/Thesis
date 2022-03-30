@@ -29,7 +29,9 @@ const CoursePage = () => {
                     Completed chapters - {completedChapters}/{totalChapters}
                 </Text>
             </Header>
-            <ChapterTree rootChapter={rootChapter} />
+            <ChapterTree
+                rootChapter={rootChapter}
+                onClick={id => console.log("Clicked chapter", id)} />
         </Container>
     );
 }

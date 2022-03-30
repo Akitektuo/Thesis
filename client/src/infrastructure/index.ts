@@ -7,6 +7,7 @@ import { navigationServiceStore } from "./navigation-service/navigation-service-
 import { toastServiceStore } from "./toast-service/toast-service-store";
 import Services from "./services";
 import NavigationService from "./navigation-service";
+import useUserInformation from "./user-information/use-user-information";
 
 export {
     useAuthentication,
@@ -17,5 +18,6 @@ export {
     forceUpdateStore as forceUpdateService,
     loadingOverlayStore as loadingService,
     NavigationService,
-    navigationServiceStore as navigationService
+    navigationServiceStore as navigationService,
+    useUserInformation
 };

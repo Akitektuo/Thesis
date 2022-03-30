@@ -36,16 +36,16 @@ public class ChapterService : IChapterService
         await userService.EnsureCurrentIsAdmin();
 
         var existingChapter = await context.Chapters.FindAsync(chapter.Id);
-        if (existingChapter != null)
+        if (existingChapter == null)
             throw new ClientException($"No chapter was found with ID '{chapter.Id}'");
 
-        chapter.FilesPath = existingChapter.FilesPath;
-        chapter.Level = existingChapter.Level;
-        chapter.Name = existingChapter.Name;
-        chapter.ParentChapterId = existingChapter.ParentChapterId;
-        chapter.Points = existingChapter.Points;
+        existingChapter.FilesPath = chapter.FilesPath;
+        existingChapter.Level = chapter.Level;
+        existingChapter.Name = chapter.Name;
+        existingChapter.ParentChapterId = chapter.ParentChapterId;
+        existingChapter.Points = chapter.Points;
 
-        context.Update(chapter);
+        context.Update(existingChapter);
         await context.SaveChangesAsync();
 
         return chapter;
