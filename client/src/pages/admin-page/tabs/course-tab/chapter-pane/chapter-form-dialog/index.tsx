@@ -3,7 +3,7 @@ import { useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
 import { PlainChapterType } from "shared/types/chapter-types";
-import { ChapterListContext } from "../chapter-list/course-list-store";
+import { ChapterListContext } from "../chapter-list/chapter-list-store";
 import { ChapterFormDialogContext } from "./chapter-form-dialog-store";
 import styles from "./chapter-form-dialog.module.scss";
 

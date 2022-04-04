@@ -8,5 +8,7 @@ public interface IContentService
 
     Task<Content> Update(Content content);
 
+    Task Delete(Guid contentId);
+
     Task Rearrange(List<IdWithPosition> idsWithPositions);
 }

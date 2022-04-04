@@ -2,12 +2,12 @@ import { createCourse, updateCourse } from "accessor/course-accessor";
 import { loadingService, toastService } from "infrastructure";
 import { makeAutoObservable, toJS } from "mobx";
 import { createContext } from "react";
-import { EMPTY_PLAIN_COURSE_TYPE, PlainCourseType } from "shared/types/course-types";
+import { EMPTY_PLAIN_COURSE, PlainCourseType } from "shared/types/course-types";
 import { makeValidator, Validator } from "validation";
 import CourseFormDialogRules from "./course-form-dialog-rules";
 
 export class CourseFormDialogStore {
-    public courseEdit: PlainCourseType = EMPTY_PLAIN_COURSE_TYPE;
+    public courseEdit: PlainCourseType = EMPTY_PLAIN_COURSE;
     public shouldShow: boolean = false;
     public isAdd: boolean = true;
 
@@ -22,7 +22,7 @@ export class CourseFormDialogStore {
         if (course === undefined)
             return this.shouldShow = false;
 
-        this.setCourseEdit(course ?? EMPTY_PLAIN_COURSE_TYPE);
+        this.setCourseEdit(course ?? EMPTY_PLAIN_COURSE);
         this.isAdd = course === null;
         this.shouldShow = true;
     }

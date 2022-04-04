@@ -2,7 +2,7 @@ import { Avatar, Divider, ListItem, ListItemAvatar, ListItemText } from "@mui/ma
 import classNames from "classnames";
 import { PlainChapterType } from "shared/types/chapter-types";
 import { IconButton } from "components";
-import EditIcon from '@mui/icons-material/EditSharp';
+import EditIcon from "@mui/icons-material/EditSharp";
 import styles from "./chapter-list-item.module.scss";
 
 interface Props extends PlainChapterType {

@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { createContext } from "react";
 import { PlainChapterType } from "shared/types/chapter-types";
 import { PlainCourseType } from "shared/types/course-types";
-import { chapterListStore } from "./chapter-pane/chapter-list/course-list-store";
+import { chapterListStore } from "./chapter-pane/chapter-list/chapter-list-store";
 import { courseListStore } from "./course-list/course-list-store";
 
 export class CourseTabStore {

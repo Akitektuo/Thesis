@@ -3,7 +3,7 @@ import { generateUid } from "helpers/random";
 import { useRef } from "react";
 
 export interface DropdownOption<T> {
-    value: T | null;
+    value: T;
     display: JSX.Element | string;
     defaultValue?: boolean;
 }
@@ -13,7 +13,7 @@ interface Props<T> {
     options: DropdownOption<T>[];
     label?: string;
     className?: string;
-    onChange: (value: T | null) => void;
+    onChange: (value: T) => void;
 }
 
 const Dropdown = <T extends unknown>({ value, options, label, className, onChange }: Props<T>) => {
@@ -22,7 +22,8 @@ const Dropdown = <T extends unknown>({ value, options, label, className, onChang
     const labelId = `dropdown-label-${uid.current}`;
     const defaultValue = options.find(({ defaultValue }) => defaultValue)?.value;
 
-    const handleChange = (value: T | string | null) => onChange(value === "" ? null : value as T);
+    const handleChange = (value: T | string | null) =>
+        onChange((value === "" ? null : value) as T);
 
     return (
         <FormControl className={className} fullWidth>

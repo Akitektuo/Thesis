@@ -21,11 +21,24 @@ public class ContentService : IContentService
         return content;
     }
 
+    public async Task Delete(Guid contentId)
+    {
+        await userService.EnsureCurrentIsAdmin();
+
+        var existingContent = await context.Contents.FindAsync(contentId);
+        if (existingContent == null)
+            throw new ClientException($"No content was found with ID '{contentId}'");
+
+        context.Remove(existingContent);
+        await context.SaveChangesAsync();
+    }
+
     public async Task<List<Content>> GetAll(Guid chapterId)
     {
         await userService.EnsureCurrentIsAdmin();
 
         var contents = await context.Contents.Where(content => content.ChapterId == chapterId)
+            .OrderBy(content => content.Position)
             .ToListAsync();
 
         return contents;

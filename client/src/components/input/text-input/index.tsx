@@ -13,11 +13,12 @@ interface Props {
     type?: InputHTMLAttributes<unknown>["type"];
     validator?: Validator<any>;
     fieldName?: string;
+    minRows?: number;
     onChange?: (value: string) => void;
     onKeyPress?: (key: string) => void;
 }
 
-const TextInput = ({ onChange, onKeyPress, validator, fieldName, ...other }: Props) => {
+const TextInput = ({ onChange, onKeyPress, validator, fieldName, minRows, ...other }: Props) => {
     useForceUpdate();
 
     if (validator && !fieldName) {
@@ -31,6 +32,8 @@ const TextInput = ({ onChange, onKeyPress, validator, fieldName, ...other }: Pro
         <TextField
             {...other}
             {...validatorProps}
+            multiline={minRows !== undefined}
+            minRows={minRows}
             onChange={event => {
                 onChange?.(event.target.value);
                 validatorProps?.onChange?.();

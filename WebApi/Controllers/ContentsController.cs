@@ -2,6 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ContentsController : ControllerBase
 {
     private readonly IContentService contentService;
@@ -31,6 +32,14 @@ public class ContentsController : ControllerBase
         return Ok(updatedContent);
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteContent(Guid id)
+    {
+        await contentService.Delete(id);
+
+        return Ok($"Content with ID '{id}' was removed");
+    }
+
     [HttpGet("allForChapter/{chapterId}")]
     public async Task<IActionResult> GetAllContentsForChapter(Guid chapterId)
     {
@@ -39,7 +48,7 @@ public class ContentsController : ControllerBase
         return Ok(contents);
     }
 
-    [HttpPut]
+    [HttpPut("rearrange")]
     public async Task<IActionResult> RearrangeContents(List<IdWithPosition> idsWithPositions)
     {
         await contentService.Rearrange(idsWithPositions);

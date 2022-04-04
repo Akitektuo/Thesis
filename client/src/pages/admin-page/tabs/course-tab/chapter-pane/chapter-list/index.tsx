@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { PlainChapterType } from "shared/types/chapter-types";
-import { ChapterListContext } from "./course-list-store";
+import { ChapterListContext } from "./chapter-list-store";
 import sharedStyles from "shared/styles/common.module.scss";
 import { List } from "@mui/material";
 import ChapterListItem from "../chapter-list-item";

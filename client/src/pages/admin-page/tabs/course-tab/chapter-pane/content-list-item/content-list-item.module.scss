@@ -1,0 +1,14 @@
+@import "shared/styles/colors.scss";
+
+.container {
+    cursor: pointer;
+    transition: all .3s;
+
+    &:hover .actionButton {
+        display: inline-flex;
+    }
+
+    .actionButton {
+        display: none;
+    }
+}

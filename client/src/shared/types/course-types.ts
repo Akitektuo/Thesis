@@ -6,7 +6,7 @@ export interface PlainCourseType {
     image: string;
 }
 
-export const EMPTY_PLAIN_COURSE_TYPE: PlainCourseType = {
+export const EMPTY_PLAIN_COURSE: PlainCourseType = {
     name: "",
     image: ""
 }
