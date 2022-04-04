@@ -16,6 +16,8 @@ public class DataContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     public DbSet<UserChapter> UserChapters { get; set; }
 
+    public DbSet<Content> Contents { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

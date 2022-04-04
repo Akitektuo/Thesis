@@ -11,9 +11,8 @@ public class ChaptersController : ControllerBase
         this.chapterService = chapterService;
     }
 
-
     [HttpPost]
-    public async Task<IActionResult> CreateCourse(Chapter chapter)
+    public async Task<IActionResult> CreateChapter(Chapter chapter)
     {
         ClientException.ValidateModel(ModelState);
 
@@ -23,7 +22,7 @@ public class ChaptersController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateCourse(Chapter chapter)
+    public async Task<IActionResult> UpdateChapter(Chapter chapter)
     {
         ClientException.ValidateModel(ModelState);
 
