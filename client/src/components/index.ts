@@ -14,6 +14,7 @@ import LevelIndicator from "./level-indicator";
 import Header from "./header";
 import IconButton from "./icon-button";
 import Dropdown from "./input/dropdown";
+import UploadInput from "./input/upload-input";
 
 export {
     Text,
@@ -31,5 +32,6 @@ export {
     LevelIndicator,
     Header,
     IconButton,
-    Dropdown
+    Dropdown,
+    UploadInput
 }

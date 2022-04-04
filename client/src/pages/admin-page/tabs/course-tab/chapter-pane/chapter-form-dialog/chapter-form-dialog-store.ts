@@ -1,6 +1,7 @@
 import { createChapter, updateChapter } from "accessor/chapter-accessor";
+import { uploadDocument } from "accessor/document-accessor";
 import { loadingService, toastService } from "infrastructure";
-import { makeAutoObservable, toJS } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { createContext } from "react";
 import { InputNumber } from "shared/types";
 import {
@@ -15,6 +16,7 @@ import ChapterFormDialogRules from "./chapter-form-dialog-rules";
 
 export class ChapterFormDialogStore {
     public chapterEdit: InputPlainChapterType = EMPTY_INPUT_PLAIN_CHAPTER;
+    public file: File | null = null;
     public shouldShow: boolean = false;
     public isAdd: boolean = true;
 
@@ -36,6 +38,7 @@ export class ChapterFormDialogStore {
 
     private setChapterEdit = (fromChapter: InputPlainChapterType) => {
         this.chapterEdit = toJS(fromChapter);
+        this.file = null;
         this.chapterEdit.courseId = courseTabStore.selectedCourse;
         this.validator = makeValidator(this.chapterEdit, ChapterFormDialogRules);
     }
@@ -53,6 +56,8 @@ export class ChapterFormDialogStore {
         delete this.chapterEdit.parentChapterId;
     }
 
+    public setFile = (file: File | undefined) => this.file = file ?? null;
+
     public handleSave = async () => {
         this.validator.validate();
         if (!this.validator.isValid())
@@ -62,6 +67,11 @@ export class ChapterFormDialogStore {
         const apiCall = this.isAdd ? createChapter : updateChapter;
 
         try {
+            if (this.file) {
+                const fileName = await uploadDocument(this.file);
+                runInAction(() => this.chapterEdit.filesPath = fileName);
+            }
+
             const result = await apiCall(toPlainChapter(this.chapterEdit));
 
             const actionName = this.isAdd ? "created" : "updated";

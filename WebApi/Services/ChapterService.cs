@@ -4,11 +4,16 @@ public class ChapterService : IChapterService
 {
     private readonly DataContext context;
     private readonly IUserService userService;
+    private readonly IDocumentService documentService;
 
-    public ChapterService(DataContext context, IUserService userService)
+    public ChapterService(
+        DataContext context, 
+        IUserService userService, 
+        IDocumentService documentService)
     {
         this.context = context;
         this.userService = userService;
+        this.documentService = documentService;
     }
 
     public async Task<List<Chapter>> GetAll(Guid courseId)
@@ -39,7 +44,12 @@ public class ChapterService : IChapterService
         if (existingChapter == null)
             throw new ClientException($"No chapter was found with ID '{chapter.Id}'");
 
-        existingChapter.FilesPath = chapter.FilesPath;
+        if (existingChapter.FilesPath != chapter.FilesPath)
+        {
+            documentService.Delete(existingChapter.FilesPath);
+            existingChapter.FilesPath = chapter.FilesPath;
+        }
+
         existingChapter.Level = chapter.Level;
         existingChapter.Name = chapter.Name;
         existingChapter.ParentChapterId = chapter.ParentChapterId;

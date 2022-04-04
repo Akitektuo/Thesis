@@ -41,6 +41,7 @@ public class Startup
         services.AddTransient<IBadgeService, BadgeService>();
         services.AddTransient<ICourseService, CourseService>();
         services.AddTransient<IChapterService, ChapterService>();
+        services.AddTransient<IDocumentService, DocumentService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

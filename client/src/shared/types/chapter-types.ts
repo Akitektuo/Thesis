@@ -16,23 +16,23 @@ export interface InputPlainChapterType {
     points: InputNumber;
     level: InputNumber;
     parentChapterId?: string;
-    filesPath: string;
     courseId: string;
+    filesPath: string;
 }
 
 export const EMPTY_INPUT_PLAIN_CHAPTER: InputPlainChapterType = {
     name: "",
     points: null,
     level: null,
-    filesPath: "",
-    courseId: ""
+    courseId: "",
+    filesPath: ""
 }
 
 export const toPlainChapter = (from: InputPlainChapterType): PlainChapterType => ({
     ...from,
     points: from.points ?? 0,
     level: from.level ?? 0
-})
+});
 
 export interface ChapterNodeType {
     id: string;

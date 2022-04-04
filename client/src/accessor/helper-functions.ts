@@ -13,14 +13,23 @@ export const httpDelete = <T>(url: string, body?: any) => genericFetch<T>("DELET
 
 const genericFetch = <T>(method: httpMethod, url: string, body?: any) =>
     new Promise<T>(async (resolve, reject) => {
+        const isFile = body instanceof File;
+        const formData = new FormData();
+
+        const headers = new Headers({
+            "Authorization": `Bearer ${getToken()}`
+        });
+
+        if (isFile)
+            formData.append("file", body);
+        else 
+            headers.append("Content-Type", "application/json");
+
         try {
             const response = await fetch(url, {
                 method,
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${getToken()}`
-                },
-                body: JSON.stringify(body)
+                headers,
+                body: isFile ? formData : JSON.stringify(body)
             });
             
             const { statusCode, payload } = await response.json() as ServerResponse<T>;

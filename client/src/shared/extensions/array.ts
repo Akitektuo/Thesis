@@ -8,6 +8,7 @@ declare global {
         update: <V>(newValue: T, selector: (element: T) => V) => V | null;
         sortBy: <V>(selector?: (element: T) => V, descending?: boolean) => Array<T>;
         groupBy: <V>(selector: (element: T) => V) => Array<ArrayGroup<T, V>>;
+        joinBy: <V>(selector: (element: T) => V, separator?: string) => string;
     }
 }
 
@@ -68,6 +69,12 @@ if (!Array.prototype.groupBy) {
         });
 
         return result;
+    }
+}
+
+if (!Array.prototype.joinBy) {
+    Array.prototype.joinBy = function (selector, separator = ", ") {
+        return this.map(selector).join(separator);
     }
 }
 

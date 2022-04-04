@@ -1,4 +1,4 @@
-import { Dialog, Dropdown, NumberInput, TextInput, Text } from "components";
+import { Dialog, Dropdown, NumberInput, TextInput, Text, UploadInput } from "components";
 import { useForceUpdate } from "infrastructure";
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
@@ -24,6 +24,7 @@ const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
 
     const {
         chapterEdit,
+        file,
         isAdd,
         shouldShow,
         validator,
@@ -32,6 +33,7 @@ const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
         setPoints,
         setLevel,
         setParentChapter,
+        setFile,
         handleSave
     } = useContext(ChapterFormDialogContext);
 
@@ -97,6 +99,13 @@ const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
                 value={chapterEdit.parentChapterId ?? ""}
                 options={availableParentChapters}
                 onChange={setParentChapter} />
+            <UploadInput
+                className={styles.input}
+                label="Sample project"
+                acceptWildcard=".zip"
+                defaultValue={chapterEdit.filesPath}
+                value={file ? [file] : []}
+                onChange={files => setFile(files[0])}  />
         </Dialog>
     );
 }
