@@ -36,7 +36,6 @@ export class ContentFormDialogStore {
     private setContentEdit = (fromContent: PlainContentType) => {
         this.contentEdit = toJS(fromContent);
 
-        console.log(this.isAdd)
         if (this.isAdd)
             this.contentEdit.position = contentListStore.contents.length;
 
