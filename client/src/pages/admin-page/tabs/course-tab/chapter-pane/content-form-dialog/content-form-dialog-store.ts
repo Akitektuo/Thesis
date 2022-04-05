@@ -9,6 +9,7 @@ import {
 } from "shared/types/content-types";
 import { makeValidator, Validator } from "validation";
 import { courseTabStore } from "../../course-tab-store";
+import { contentListStore } from "../content-list/content-list-store";
 import ContentFormDialogRules from "./content-form-dialog-rules";
 
 export class ContentFormDialogStore {
@@ -27,15 +28,19 @@ export class ContentFormDialogStore {
         if (content === undefined)
             return this.shouldShow = false;
 
-        this.setContentEdit(content ?? EMPTY_PLAIN_CONTENT);
         this.isAdd = content === null;
+        this.setContentEdit(content ?? EMPTY_PLAIN_CONTENT);
         this.shouldShow = true;
     }
 
     private setContentEdit = (fromContent: PlainContentType) => {
         this.contentEdit = toJS(fromContent);
+
+        console.log(this.isAdd)
+        if (this.isAdd)
+            this.contentEdit.position = contentListStore.contents.length;
+
         this.contentEdit.chapterId = courseTabStore.selectedChapter;
-        // TODO: set position
         this.validator = makeValidator(this.contentEdit, ContentFormDialogRules);
     }
 

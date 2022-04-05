@@ -1,8 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import { createContext } from "react";
 import { PlainChapterType } from "shared/types/chapter-types";
+import { PlainContentType } from "shared/types/content-types";
 import { PlainCourseType } from "shared/types/course-types";
 import { chapterListStore } from "./chapter-pane/chapter-list/chapter-list-store";
+import { contentListStore } from "./chapter-pane/content-list/content-list-store";
 import { courseListStore } from "./course-list/course-list-store";
 
 export class CourseTabStore {
@@ -10,6 +12,7 @@ export class CourseTabStore {
     public selectedChapter: string = "";
     public courseEdit: PlainCourseType | null | undefined = undefined;
     public chapterEdit: PlainChapterType | null | undefined = undefined;
+    public contentEdit: PlainContentType | null | undefined = undefined;
 
     constructor() {
         makeAutoObservable(this);
@@ -54,9 +57,22 @@ export class CourseTabStore {
         action(chapter);
     }
 
+    public closeContentDialog = () => this.contentEdit = undefined;
+
+    public openAddContentDialog = () => this.contentEdit = null;
+
+    public openEditContentDialog = (content: PlainContentType) => this.contentEdit = content;
+
+    public onSaveContent = (content: PlainContentType, isAdd: boolean) => {
+        const action = isAdd ? contentListStore.addContent : contentListStore.updateContent;
+
+        action(content);
+    }
+
     public reset = () => {
         this.closeCourseDialog();
         this.closeChapterDialog();
+        this.closeContentDialog();
     }
 }
 

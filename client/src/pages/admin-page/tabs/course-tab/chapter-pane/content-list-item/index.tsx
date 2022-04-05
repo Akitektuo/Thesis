@@ -1,4 +1,4 @@
-import { Avatar, Divider, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { Divider, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { IconButton, Text } from "components";
 import { ContentTypeEnum, PlainContentType } from "shared/types/content-types";
 import EditIcon from "@mui/icons-material/EditSharp";

@@ -1,6 +1,15 @@
-import { Button, Dialog as MaterialDialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {
+    Button,
+    Dialog as MaterialDialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from "@mui/material";
+import classNames from "classnames";
 import { isString } from "helpers/low-level";
 import { PropsWithChildren } from "react";
+import styles from "./dialog.module.scss";
 
 interface Props {
     isOpen: boolean
@@ -31,7 +40,9 @@ const Dialog = ({
             <DialogTitle>{title}</DialogTitle>
         )}
         {children && isString(children) ? (
-            <DialogContentText className={contentClassName}>{children}</DialogContentText>
+            <DialogContentText className={classNames(styles.textContent, contentClassName)}>
+                {children}
+            </DialogContentText>
         ) : (
             <DialogContent className={contentClassName}>{children}</DialogContent>
         )}

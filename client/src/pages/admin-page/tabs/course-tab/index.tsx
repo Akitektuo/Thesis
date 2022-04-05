@@ -6,10 +6,12 @@ import CourseList from "./course-list";
 import { CourseTabContext } from "./course-tab-store";
 import CourseIcon from "@mui/icons-material/SchoolSharp";
 import ChapterIcon from "@mui/icons-material/BookmarkSharp";
+import ContentIcon from "@mui/icons-material/TextSnippetSharp";
 import styles from "./course-tab.module.scss";
 import CourseFormDialog from "./course-form-dialog";
 import ChapterPane from "./chapter-pane";
 import ChapterFormDialog from "./chapter-pane/chapter-form-dialog";
+import ContentFormDialog from "./chapter-pane/content-form-dialog";
 
 const CourseTab = () => {
     const {
@@ -17,6 +19,7 @@ const CourseTab = () => {
         selectedChapter,
         courseEdit,
         chapterEdit,
+        contentEdit,
         selectCourse,
         closeCourseDialog,
         openAddCourseDialog,
@@ -27,6 +30,10 @@ const CourseTab = () => {
         openAddChapterDialog,
         openEditChapterDialog,
         onSaveChapter,
+        closeContentDialog,
+        openAddContentDialog,
+        openEditContentDialog,
+        onSaveContent,
         reset
     } = useContext(CourseTabContext);
 
@@ -42,11 +49,20 @@ const CourseTab = () => {
             </div>
             <ChapterPane
                 courseId={selectedCourse}
+                chapterId={selectedChapter}
                 highlightChapter={({ id }) => id === selectedChapter}
                 onClickChapter={selectChapter}
-                onClickChapterEdit={openEditChapterDialog} />
+                onClickChapterEdit={openEditChapterDialog}
+                onClickContentEdit={openEditContentDialog} />
         </div>
         <AddButton>
+            {!!selectedChapter && (
+                <Tooltip title="Add content">
+                    <Fab className={styles.addButton} size="small" onClick={openAddContentDialog}>
+                        <ContentIcon />
+                    </Fab>
+                </Tooltip>
+            )}
             {!!selectedCourse && (
                 <Tooltip title="Add chapter">
                     <Fab className={styles.addButton} size="small" onClick={openAddChapterDialog}>
@@ -65,6 +81,10 @@ const CourseTab = () => {
             chapter={chapterEdit}
             onClose={closeChapterDialog}
             onSave={onSaveChapter} />
+        <ContentFormDialog
+            content={contentEdit}
+            onClose={closeContentDialog}
+            onSave={onSaveContent} />
     </>;
 }
 

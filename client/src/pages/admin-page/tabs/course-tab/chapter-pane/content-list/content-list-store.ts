@@ -29,7 +29,7 @@ export class ContentListStore {
         this.contents.update(content, ({ id }) => id === content.id);
 
     public removeContent = (content: PlainContentType) =>
-        this.contents.remove(({ id }) => id === content.id);
+        this.contents = this.contents.filter(({ id }) => id !== content.id);
 }
 
 export const contentListStore = new ContentListStore();
