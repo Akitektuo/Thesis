@@ -5,6 +5,7 @@ import { ContentListContext } from "./content-list-store";
 import sharedStyles from "shared/styles/common.module.scss";
 import { observer } from "mobx-react";
 import ContentListItem from "../content-list-item";
+import { DragDropContext, Droppable, DroppableProvided, DropResult } from "react-beautiful-dnd";
 
 interface Props {
     chapterId?: string;
@@ -13,26 +14,65 @@ interface Props {
     onClickRemove?: (content: PlainContentType) => void;
 }
 
-const ContentList = ({ chapterId = "", onClick, onClickEdit, onClickRemove }: Props) => {
-    const { contents, fetchContents } = useContext(ContentListContext);
+interface ObserverListProps extends Props {
+    provided: DroppableProvided;
+}
 
-    useEffect(() => {
-        fetchContents(chapterId);
-    }, [chapterId, fetchContents]);
+const ObserverList = observer(({
+    provided,
+    onClick,
+    onClickEdit,
+    onClickRemove
+}: ObserverListProps) => {
+    const { contents } = useContext(ContentListContext);
 
     return (
-        <List className={sharedStyles.scrollable}>
+        <List
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={sharedStyles.scrollable}>
             {contents.map((content, index) => (
                 <ContentListItem
                     key={content.id}
+                    index={index}
                     showDivider={!!index}
                     onClick={() => onClick?.(content)}
                     onClickEdit={() => onClickEdit?.(content)}
                     onClickRemove={() => onClickRemove?.(content)}
                     {...content} />
             ))}
+            {provided.placeholder}
         </List>
+    );
+});
+
+const ContentList = ({ chapterId = "", onClick, onClickEdit, onClickRemove }: Props) => {
+    const { fetchContents, reorder } = useContext(ContentListContext);
+
+    useEffect(() => {
+        fetchContents(chapterId);
+    }, [chapterId, fetchContents]);
+
+    const handleDragEnd = ({ destination, source }: DropResult) => {
+        if (!destination)
+            return;
+
+        reorder(chapterId, destination.index, source.index);
+    }
+
+    return (
+        <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="content-droppable-list">
+                {provided => (
+                    <ObserverList
+                        provided={provided}
+                        onClick={onClick}
+                        onClickEdit={onClickEdit}
+                        onClickRemove={onClickRemove} />
+                )}
+            </Droppable>
+        </DragDropContext>
     );
 }
 
-export default observer(ContentList);
+export default ContentList;

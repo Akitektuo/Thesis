@@ -15,6 +15,7 @@ import Header from "./header";
 import IconButton from "./icon-button";
 import Dropdown from "./input/dropdown";
 import UploadInput from "./input/upload-input";
+import RenderContent from "./render-content";
 
 export {
     Text,
@@ -33,5 +34,6 @@ export {
     Header,
     IconButton,
     Dropdown,
-    UploadInput
+    UploadInput,
+    RenderContent
 }

@@ -10,5 +10,5 @@ public interface IContentService
 
     Task Delete(Guid contentId);
 
-    Task Rearrange(List<IdWithPosition> idsWithPositions);
+    Task Rearrange(Guid chapterId, List<IdWithPosition> idsWithPositions);
 }

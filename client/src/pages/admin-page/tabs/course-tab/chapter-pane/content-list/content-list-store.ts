@@ -1,4 +1,4 @@
-import { getAllContents } from "accessor/content-accessor";
+import { getAllContents, rearrangeContents } from "accessor/content-accessor";
 import { loadingService } from "infrastructure";
 import { makeAutoObservable, runInAction } from "mobx";
 import { createContext } from "react";
@@ -30,6 +30,22 @@ export class ContentListStore {
 
     public removeContent = (content: PlainContentType) =>
         this.contents = this.contents.filter(({ id }) => id !== content.id);
+
+    public reorder = async (chapterId: string, from: number, to: number) => {
+        loadingService.setLoading(true);
+
+        const rearrangeDetails = this.contents.swap(from, to).map((element, index) => {
+            element.position = index;
+
+            return {
+                id: element.id ?? "",
+                position: index
+            };
+        });
+        await rearrangeContents(chapterId, rearrangeDetails);
+
+        loadingService.setLoading(false);
+    }
 }
 
 export const contentListStore = new ContentListStore();

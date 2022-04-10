@@ -1,3 +1,7 @@
 .pane {
     width: 50%;
 }
+
+.dialog :global(.MuiDialog-paper) {
+    min-width: 70vw;
+}

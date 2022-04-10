@@ -17,5 +17,5 @@ export const deleteContent = (contentId: string) =>
 export const getAllContents = (chapterId: string) =>
     httpGet<PlainContentType[]>(`${URL}/allForChapter/${chapterId}`);
 
-export const rearrangeContents = (idsWithPositions: IdWithPosition[]) =>
-    httpPut(`${URL}/rearrange`, idsWithPositions);
+export const rearrangeContents = (chapterId: string, idsWithPositions: IdWithPosition[]) =>
+    httpPut(`${URL}/rearrange/${chapterId}`, idsWithPositions);

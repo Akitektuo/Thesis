@@ -48,10 +48,10 @@ public class ContentsController : ControllerBase
         return Ok(contents);
     }
 
-    [HttpPut("rearrange")]
-    public async Task<IActionResult> RearrangeContents(List<IdWithPosition> idsWithPositions)
+    [HttpPut("rearrange/{chapterId}")]
+    public async Task<IActionResult> RearrangeContents(Guid chapterId, List<IdWithPosition> idsWithPositions)
     {
-        await contentService.Rearrange(idsWithPositions);
+        await contentService.Rearrange(chapterId, idsWithPositions);
 
         return Ok("Contets have been rearranged");
     }

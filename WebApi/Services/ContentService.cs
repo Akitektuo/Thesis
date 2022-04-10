@@ -44,10 +44,9 @@ public class ContentService : IContentService
         return contents;
     }
 
-    public async Task Rearrange(List<IdWithPosition> idsWithPositions)
+    public async Task Rearrange(Guid chapterId, List<IdWithPosition> idsWithPositions)
     {
-        await context.Contents.Where(content =>
-                idsWithPositions.Any(idWithPosition => content.Id == idWithPosition.Id))
+        await context.Contents.Where(content => content.ChapterId == chapterId)
             .ForEachAsync(content => {
                 var idWithPosition = idsWithPositions.First(idWithPosition => content.Id == idWithPosition.Id);
 

@@ -7,6 +7,7 @@ import { contentListStore } from "./content-list/content-list-store";
 
 export class ChapterPaneStore {
     public contentToDelete: PlainContentType | null = null;
+    public contentToShow: PlainContentType | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -15,6 +16,10 @@ export class ChapterPaneStore {
     public closeConfirmDialog = () => this.contentToDelete = null;
 
     public openConfirmDialog = (content: PlainContentType) => this.contentToDelete = content;
+
+    public closeDetailsDialog = () => this.contentToShow = null;
+
+    public openDetailsDialog = (content: PlainContentType) => this.contentToShow = content;
 
     public handleConfirm = async () => {
         if (!this.contentToDelete)
@@ -40,6 +45,7 @@ export class ChapterPaneStore {
 
     public reset = () => {
         this.closeConfirmDialog();
+        this.closeDetailsDialog();
     }
 }
 

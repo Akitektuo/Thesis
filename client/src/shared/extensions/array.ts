@@ -1,5 +1,6 @@
 /*eslint no-extend-native: ["error", { "exceptions": ["Array"] }]*/
 
+import { toJS } from "mobx";
 import { ArrayGroup } from "shared/types";
 
 declare global {
@@ -10,6 +11,7 @@ declare global {
         groupBy: <V>(selector: (element: T) => V) => Array<ArrayGroup<T, V>>;
         joinBy: <V>(selector: (element: T) => V, separator?: string) => string;
         remove: <V>(selector: (element: T) => V) => V | null;
+        swap: (from: number, to: number) => Array<T>;
     }
 }
 
@@ -27,9 +29,9 @@ if (!Array.prototype.mapFirst) {
 if (!Array.prototype.update) {
     Array.prototype.update = function (newValue, selector) {
         const updateIndex = this.findIndex(element => selector(element) === selector(newValue));
-        const oldValue = this[updateIndex];
+        const oldValue = toJS(this[updateIndex]);
         
-        this[updateIndex] = newValue;
+        this.splice(updateIndex, 1, newValue);
 
         return oldValue;
     }
@@ -87,6 +89,16 @@ if (!Array.prototype.remove) {
         this.splice(removeIndex, 1);
 
         return oldValue;
+    }
+}
+
+if (!Array.prototype.swap) {
+    Array.prototype.swap = function (from, to) {
+        const auxiliaryElement = this[from];
+        this[from] = this[to];
+        this[to] = auxiliaryElement;
+
+        return this;
     }
 }
 

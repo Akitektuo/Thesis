@@ -3,6 +3,11 @@
 .container {
     cursor: pointer;
     transition: all .3s;
+    user-select: none;
+
+    &.dragged {
+        background-color: $primary-light-transparent;
+    }
 
     &:hover .actionButton {
         display: inline-flex;
@@ -10,5 +15,12 @@
 
     .actionButton {
         display: none;
+    }
+
+    .content {
+        display: -webkit-box;
+        -webkit-line-clamp: 6;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 }
