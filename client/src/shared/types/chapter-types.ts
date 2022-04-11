@@ -1,4 +1,5 @@
 import { InputNumber } from ".";
+import { DisplayContentType } from "./content-types";
 
 export interface PlainChapterType {
     id?: string;
@@ -68,3 +69,14 @@ export const toGridItem = (
     previousChapterId: parent?.id,
     previousChapterName: parent?.name
 });
+
+export interface ChapterDetailsType {
+    courseId: string;
+    courseName: string;
+    chapterName: string;
+    points: number;
+    filesUrl: string;
+    contents: DisplayContentType[];
+    approved: boolean;
+    message: string;
+}

@@ -1,26 +1,23 @@
-import { getCourse } from "accessor/course-accessor";
+import { getChapter } from "accessor/chapter-accessor";
 import { loadingService, navigationService, toastService } from "infrastructure";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ROUTE_INDEX } from "pages/routes/constants";
 import { createContext } from "react";
-import { CourseDetailsType } from "shared/types/course-types";
+import { ChapterDetailsType } from "shared/types/chapter-types";
 
-export class CoursePageStore {
-    public courseDetails: CourseDetailsType | null = null;
+export class ChapterPageStore {
+    public chapterDetails: ChapterDetailsType | null = null;
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    public fetchCourseDetails = async (courseId: string | undefined) => {
-        if (!courseId)
-            return this.showErrorAndRedirect("Error: Invalid course ID!");
-
+    public fetchChapterDetails = async (id: string) => {
         loadingService.setLoading(true);
-        
+
         try {
-            const courseDetails = await getCourse(courseId);
-            runInAction(() => this.courseDetails = courseDetails);
+            const chapterDetails = await getChapter(id);
+            runInAction(() => this.chapterDetails = chapterDetails);
         } catch (error: any) {
             this.showErrorAndRedirect(error);
         }
@@ -35,9 +32,9 @@ export class CoursePageStore {
     }
 
     public reset = () => {
-        this.courseDetails = null;
+        this.chapterDetails = null;
     }
 }
 
-export const coursePageStore = new CoursePageStore();
-export const CoursePageContext = createContext(coursePageStore);
+export const chapterPageStore = new ChapterPageStore();
+export const ChapterPageContext = createContext(chapterPageStore);

@@ -30,6 +30,15 @@ public class ContentService : IContentService
             throw new ClientException($"No content was found with ID '{contentId}'");
 
         context.Remove(existingContent);
+
+        await context.Contents.Where(content =>
+                content.ChapterId == existingContent.ChapterId &&
+                content.Position > existingContent.Position)
+            .ForEachAsync(content => {
+                --content.Position;
+                context.Update(content);
+            });
+
         await context.SaveChangesAsync();
     }
 

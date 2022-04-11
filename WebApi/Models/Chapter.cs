@@ -19,4 +19,6 @@ public class Chapter
     public Guid CourseId { get; set; }
 
     public virtual Course Course { get; set; }
+
+    public virtual ICollection<Content> Contents { get; set; }
 }

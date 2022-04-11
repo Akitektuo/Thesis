@@ -61,8 +61,39 @@ public class ChapterService : IChapterService
         return chapter;
     }
 
-    public Task<ChapterDetailsModel> Get(Guid id)
+    public async Task<ChapterDetailsModel> Get(Guid id)
     {
-        return Task.FromResult(new ChapterDetailsModel());
+        var chapter = await context.Chapters.Include(chapter => chapter.Course)
+            .Include(chapter => chapter.Contents)
+            .FirstOrDefaultAsync(chapter => chapter.Id == id);
+        if (chapter == null)
+            throw new ClientException($"No chapter was found with ID '{chapter.Id}'");
+
+        var userChapter = await GetOrCreateUserChapter(id);
+        var filePath = documentService.Get(chapter.FilesPath);
+
+        return new ChapterDetailsModel(chapter, filePath, userChapter);
+    }
+
+    private async Task<UserChapter> GetOrCreateUserChapter(Guid chapterId)
+    {
+        var userId = userService.GetCurrentUserId();
+        var userChapter = await context.UserChapters.FindAsync(userId, chapterId);
+        if (userChapter != null)
+            return userChapter;
+
+        userChapter = new()
+        {
+            UserId = userId,
+            ChapterId = chapterId,
+            Approved = false,
+            Message = "",
+            SolutionPath = ""
+        };
+
+        await context.UserChapters.AddAsync(userChapter);
+        await context.SaveChangesAsync();
+
+        return userChapter;
     }
 }

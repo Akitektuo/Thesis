@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import { Header, Text } from "components";
 import { observer } from "mobx-react";
-import { ROUTE_INDEX } from "pages/routes/constants";
+import { ROUTE_CHAPTER, ROUTE_INDEX } from "pages/routes/constants";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ChapterTree from "./chapter-tree";
@@ -11,11 +11,13 @@ import styles from "./course-page.module.scss";
 const CoursePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { courseDetails, fetchCourseDetails } = useContext(CoursePageContext);
+    const { courseDetails, fetchCourseDetails, reset } = useContext(CoursePageContext);
 
     useEffect(() => {
         fetchCourseDetails(id);
-    }, [id, fetchCourseDetails]);
+
+        return reset;
+    }, [id, fetchCourseDetails, reset]);
 
     if (!courseDetails)
         return null;
@@ -31,7 +33,7 @@ const CoursePage = () => {
             </Header>
             <ChapterTree
                 rootChapter={rootChapter}
-                onClick={id => console.log("Clicked chapter", id)} />
+                onClick={id => navigate(`${ROUTE_CHAPTER}/${id}`)} />
         </Container>
     );
 }

@@ -28,8 +28,12 @@ export class ContentListStore {
     public updateContent = (content: PlainContentType) =>
         this.contents.update(content, ({ id }) => id === content.id);
 
-    public removeContent = (content: PlainContentType) =>
+    public removeContent = (content: PlainContentType) => {
         this.contents = this.contents.filter(({ id }) => id !== content.id);
+
+        this.contents.filter(element => element.position > content.position)
+            .forEach(element => --element.position);
+    }
 
     public reorder = async (chapterId: string, from: number, to: number) => {
         loadingService.setLoading(true);

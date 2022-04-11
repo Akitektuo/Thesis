@@ -17,3 +17,8 @@ export const EMPTY_PLAIN_CONTENT: PlainContentType = {
     position: 0,
     text: ""
 };
+
+export interface DisplayContentType {
+    type: ContentTypeEnum;
+    text: string;
+}

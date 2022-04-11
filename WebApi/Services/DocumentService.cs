@@ -31,6 +31,8 @@ public class DocumentService : IDocumentService
         return uniqueFileName;
     }
 
+    public string Get(string fileName) => GetFilePath(fileName);
+
     private string GetFilePath(string fileName) =>
         Path.Combine(Constants.FileUploadDirectory, fileName);
 }
