@@ -2,3 +2,12 @@ span.pointsHeaderIndicator {
     margin-left: auto;
     font-size: .9rem;
 }
+
+.content {
+    margin: 1rem 0;
+
+    .actions {
+        max-width: Max(32rem, 70%);
+        margin: 0 auto;
+    }
+}

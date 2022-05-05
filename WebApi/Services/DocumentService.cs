@@ -31,8 +31,13 @@ public class DocumentService : IDocumentService
         return uniqueFileName;
     }
 
-    public string Get(string fileName) => GetFilePath(fileName);
+    public string Get(string fileName) => Path.GetFullPath(GetFilePath(fileName));
 
     private string GetFilePath(string fileName) =>
         Path.Combine(Constants.FileUploadDirectory, fileName);
+
+    public byte[] GetBytes(string fileName)
+    {
+        throw new NotImplementedException();
+    }
 }

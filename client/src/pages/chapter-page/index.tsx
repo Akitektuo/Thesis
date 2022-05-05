@@ -1,9 +1,10 @@
-import { Container } from "@mui/material";
+import { Container, Paper } from "@mui/material";
 import { Header, Text } from "components";
 import { observer } from "mobx-react";
 import { ROUTE_COURSE } from "pages/routes/constants";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
+import ActionButtons from "./action-buttons";
 import { ChapterPageContext } from "./chapter-page-store";
 import styles from "./chapter-page.module.scss";
 import ContentList from "./content-list";
@@ -22,7 +23,15 @@ const ChapterPage = () => {
     if (!chapterDetails)
         return null;
 
-    const { courseId, courseName, chapterName, points, approved, contents } = chapterDetails;
+    const {
+        courseId,
+        courseName,
+        chapterName,
+        points,
+        approved,
+        contents,
+        filesUrl
+    } = chapterDetails;
 
     return (
         <Container>
@@ -33,7 +42,13 @@ const ChapterPage = () => {
                     {approved ? "No available points" : `Available points - ${points}`}
                 </Text>
             </Header>
-            <ContentList contents={contents} />
+            <Paper elevation={4} className={styles.content}>
+                <ContentList contents={contents} />
+                <ActionButtons 
+                    filesName={`${courseName}_${chapterName}.zip`} 
+                    filesUrl={filesUrl} 
+                    className={styles.actions} />
+            </Paper>
         </Container>
     );
 }

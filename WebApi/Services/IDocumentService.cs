@@ -7,4 +7,6 @@ public interface IDocumentService
     bool Delete(string fileName);
 
     string Get(string fileName);
+
+    byte[] GetBytes(string fileName);
 }
