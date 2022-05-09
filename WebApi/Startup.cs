@@ -43,6 +43,7 @@ public class Startup
         services.AddTransient<IChapterService, ChapterService>();
         services.AddTransient<IDocumentService, DocumentService>();
         services.AddTransient<IContentService, ContentService>();
+        services.AddTransient<IEvaluatorService, EvaluatorService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +58,8 @@ public class Startup
 
         app.UseCors();
 
-        app.UseMiddleware<MiddlewareHandler>();
+        app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api/Documents"),
+            appBuilder => appBuilder.UseMiddleware<MiddlewareHandler>());
         app.UseHttpsRedirection();
 
         app.UseRouting();

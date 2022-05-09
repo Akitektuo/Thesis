@@ -7,4 +7,5 @@ public static class Constants
     public const string JwtAudience = "JWT:Audience";
     public const string Command = "java -jar ../Analyzer/cli/analyzer.jar";
     public const string FileUploadDirectory = "../Uploads";
+    public const string ContentTypeZip = "application/zip";
 }

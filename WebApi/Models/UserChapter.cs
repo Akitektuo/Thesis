@@ -10,9 +10,22 @@ public class UserChapter
 
     public virtual User User { get; set; }
 
-    public string SolutionPath { get; set; }
+    public string FileName { get; set; }
 
     public bool Approved { get; set; }
 
     public string Message { get; set; }
+
+    public UserChapter()
+    {
+    }
+
+    public UserChapter(Guid userId, Guid chapterId)
+    {
+        UserId = userId;
+        ChapterId = chapterId;
+        FileName = "";
+        Approved = false;
+        Message = "";
+    }
 }

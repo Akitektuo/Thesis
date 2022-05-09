@@ -22,13 +22,13 @@ public class ChapterDetailsModel
     {
     }
 
-    public ChapterDetailsModel(Chapter chapter, string filePath, UserChapter userChapter)
+    public ChapterDetailsModel(Chapter chapter, UserChapter userChapter)
     {
         CourseId = chapter.CourseId;
         CourseName = chapter.Course.Name;
         ChapterName = chapter.Name;
         Points = chapter.Points;
-        FilesUrl = filePath;
+        FilesUrl = chapter.FileName;
         Contents = chapter.Contents.OrderBy(content => content.Position)
             .Select(content => new ContentModel(content))
             .ToList();

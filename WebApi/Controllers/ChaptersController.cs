@@ -2,6 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ChaptersController : ControllerBase
 {
     private readonly IChapterService chapterService;
@@ -43,6 +44,14 @@ public class ChaptersController : ControllerBase
     public async Task<IActionResult> GetChapter(Guid id)
     {
         var chapter = await chapterService.Get(id);
+
+        return Ok(chapter);
+    }
+
+    [HttpPost("{id}")]
+    public async Task<IActionResult> PostChapterSolution(Guid id, string fileName)
+    {
+        var chapter = await chapterService.PostSolution(id, fileName);
 
         return Ok(chapter);
     }

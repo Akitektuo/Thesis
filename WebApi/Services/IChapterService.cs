@@ -9,4 +9,6 @@ public interface IChapterService
     Task<Chapter> Update(Chapter chapter);
 
     Task<ChapterDetailsModel> Get(Guid id);
+
+    Task<SolutionResultModel> PostSolution(Guid chapterId, string fileName);
 }

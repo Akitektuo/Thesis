@@ -14,7 +14,7 @@ public class Chapter
 
     public virtual Chapter ParentChapter { get; set; }
 
-    public string FilesPath { get; set; }
+    public string FileName { get; set; }
 
     public Guid CourseId { get; set; }
 

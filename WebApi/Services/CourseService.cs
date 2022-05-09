@@ -66,6 +66,8 @@ public class CourseService : ICourseService
         if (course == null)
             throw new ClientException($"No course was found with ID '{course.Id}'");
 
+        await MarkCourseStartedForCurrentUser(id);
+
         var userChapters = await GetCurrentUserChapters();
 
         (var completed, var total) = GetCompletedAndTotalChapters(userChapters, course.Chapters);
@@ -140,5 +142,27 @@ public class CourseService : ICourseService
         var availablePoints = GetPointsToCollect(userChapters, course.Chapters);
 
         return new(course, completedAndTotalChapters, availablePoints);
+    }
+
+    private async Task MarkCourseStartedForCurrentUser(Guid courseId)
+    {
+        var userId = userService.GetCurrentUserId();
+
+        var isCourseRelationShip = await context.UserCourses.AnyAsync(c => c.CourseId == courseId);
+        if (isCourseRelationShip)
+            return;
+
+        await context.AddAsync(new UserCourse
+        {
+            UserId = userId,
+            CourseId = courseId
+        });
+
+        var rootChapter = await context.Chapters.FirstOrDefaultAsync(chapter =>
+            chapter.CourseId == courseId && chapter.ParentChapterId == null);
+
+        await context.AddAsync(new UserChapter(userId, rootChapter.Id));
+        // TODO: Maybe also add a badge 'Oh, what's this? :eyes:'
+        await context.SaveChangesAsync();
     }
 }

@@ -36,8 +36,5 @@ public class DocumentService : IDocumentService
     private string GetFilePath(string fileName) =>
         Path.Combine(Constants.FileUploadDirectory, fileName);
 
-    public byte[] GetBytes(string fileName)
-    {
-        throw new NotImplementedException();
-    }
+    public byte[] GetBytes(string fileName) => File.ReadAllBytes(GetFilePath(fileName));
 }

@@ -8,13 +8,15 @@ public interface IUserService
 
     Guid GetCurrentUserId();
 
-    Task<User> GetCurrent();
+    Task<User> GetCurrent(Guid? id = null);
 
-    Task<bool> IsCurrentAdmin();
+    Task<bool> IsCurrentAdmin(Guid? id = null);
 
     Task<User> GetUserWithBadges(bool includeBadges = false);
 
     Task<UserDashbordModel> GetUserDashbord();
 
     Task EnsureCurrentIsAdmin();
+
+    Task IncreaseExperience(int experience, Guid? userId = null, bool bypassSaveChanges = false);
 }

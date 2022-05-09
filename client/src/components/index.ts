@@ -16,6 +16,7 @@ import IconButton from "./icon-button";
 import Dropdown from "./input/dropdown";
 import UploadInput from "./input/upload-input";
 import RenderContent from "./render-content";
+import UploadDialog from "./upload-dialog";
 
 export {
     Text,
@@ -35,5 +36,6 @@ export {
     IconButton,
     Dropdown,
     UploadInput,
-    RenderContent
+    RenderContent,
+    UploadDialog
 }

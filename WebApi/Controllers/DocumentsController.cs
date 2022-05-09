@@ -23,11 +23,11 @@ public class DocumentsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Download(string fileName)
+    [HttpGet("{fileName}")]
+    public IActionResult Download(string fileName)
     {
         var file = documentService.GetBytes(fileName);
 
-        return Ok(file);
+        return File(file, Constants.ContentTypeZip);
     }
 }

@@ -5,15 +5,18 @@ public class ChapterService : IChapterService
     private readonly DataContext context;
     private readonly IUserService userService;
     private readonly IDocumentService documentService;
+    private readonly IEvaluatorService evaluatorService;
 
     public ChapterService(
-        DataContext context, 
-        IUserService userService, 
-        IDocumentService documentService)
+        DataContext context,
+        IUserService userService,
+        IDocumentService documentService,
+        IEvaluatorService evaluatorService)
     {
         this.context = context;
         this.userService = userService;
         this.documentService = documentService;
+        this.evaluatorService = evaluatorService;
     }
 
     public async Task<List<Chapter>> GetAll(Guid courseId)
@@ -44,10 +47,10 @@ public class ChapterService : IChapterService
         if (existingChapter == null)
             throw new ClientException($"No chapter was found with ID '{chapter.Id}'");
 
-        if (existingChapter.FilesPath != chapter.FilesPath)
+        if (existingChapter.FileName != chapter.FileName)
         {
-            documentService.Delete(existingChapter.FilesPath);
-            existingChapter.FilesPath = chapter.FilesPath;
+            documentService.Delete(existingChapter.FileName);
+            existingChapter.FileName = chapter.FileName;
         }
 
         existingChapter.Level = chapter.Level;
@@ -70,9 +73,8 @@ public class ChapterService : IChapterService
             throw new ClientException($"No chapter was found with ID '{chapter.Id}'");
 
         var userChapter = await GetOrCreateUserChapter(id);
-        var filePath = documentService.Get(chapter.FilesPath);
 
-        return new ChapterDetailsModel(chapter, filePath, userChapter);
+        return new ChapterDetailsModel(chapter, userChapter);
     }
 
     private async Task<UserChapter> GetOrCreateUserChapter(Guid chapterId)
@@ -82,18 +84,74 @@ public class ChapterService : IChapterService
         if (userChapter != null)
             return userChapter;
 
-        userChapter = new()
-        {
-            UserId = userId,
-            ChapterId = chapterId,
-            Approved = false,
-            Message = "",
-            SolutionPath = ""
-        };
+        userChapter = new UserChapter(userId, chapterId);
 
         await context.UserChapters.AddAsync(userChapter);
         await context.SaveChangesAsync();
 
         return userChapter;
+    }
+
+    public async Task<SolutionResultModel> PostSolution(Guid chapterId, string fileName)
+    {
+        var userId = userService.GetCurrentUserId();
+        var userChapter = await context.UserChapters.FindAsync(userId, chapterId);
+        if (userChapter == null)
+            return null;
+
+        var evaluationMessages = evaluatorService.Evaluate(fileName);
+
+        var approved = !evaluationMessages.Any();
+        var messages = string.Join("\n\n", evaluationMessages);
+
+        if (approved && !userChapter.Approved)
+            await MakeChapterApprovedForUser(userChapter, fileName);
+        else if (!userChapter.Approved)
+        {
+            userChapter.Message = messages;
+            await UpdateUserChapterAndSetFile(userChapter, fileName);
+            // TODO: Give badge for 'improving by failing'
+        }
+        else
+        {
+            // TODO: Give badge for 'first fail'
+        }
+
+        return new SolutionResultModel
+        {
+            Approved = approved,
+            Message = messages
+        };
+    }
+
+    private async Task MakeChapterApprovedForUser(UserChapter userChapter, string fileName)
+    {
+        userChapter.Approved = true;
+
+        var chapter = await context.Chapters.FindAsync(userChapter.ChapterId);
+
+        await UpdateUserChapterAndSetFile(userChapter, fileName, true);
+        await UnlockNextChapters(userChapter.ChapterId, userChapter.UserId);
+        await userService.IncreaseExperience(chapter.Points, userChapter.UserId);
+        // TODO: Give badge for specific chapter
+    }
+
+    private async Task UpdateUserChapterAndSetFile(
+        UserChapter userChapter, 
+        string fileName, 
+        bool bypassSaveChanges = false)
+    {
+        userChapter.FileName = fileName;
+
+        context.Update(userChapter);
+        if (!bypassSaveChanges)
+            await context.SaveChangesAsync();
+    }
+
+    private async Task UnlockNextChapters(Guid forId, Guid userId)
+    {
+        var userChaptersToAdd = context.Chapters.Where(chapter => chapter.ParentChapterId == forId)
+            .Select(chapter => new UserChapter(userId, chapter.Id));
+        await context.AddRangeAsync(userChaptersToAdd);
     }
 }

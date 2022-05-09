@@ -23,17 +23,17 @@ public class UserService : IUserService
 
     public Guid GetCurrentUserId() => httpAccessor.GetUserId();
 
-    public async Task<User> GetCurrent()
+    public async Task<User> GetCurrent(Guid? id = null)
     {
-        var userId = GetCurrentUserId();
+        var userId = id ?? GetCurrentUserId();
         var user = await userManager.FindByIdAsync(userId.ToString());
 
         return user;
     }
 
-    public async Task<bool> IsCurrentAdmin()
+    public async Task<bool> IsCurrentAdmin(Guid? id = null)
     {
-        var currentUser = await GetCurrent();
+        var currentUser = await GetCurrent(id);
 
         return currentUser.IsAdmin;
     }
@@ -122,5 +122,18 @@ public class UserService : IUserService
         var isCurrentUserAdmin = await IsCurrentAdmin();
         if (!isCurrentUserAdmin)
             throw new ClientException("Forbidden");
+    }
+
+    public async Task IncreaseExperience(
+        int experience, 
+        Guid? userId = null, 
+        bool bypassSaveChanges = false)
+    {
+        var user = await GetCurrent(userId);
+        user.Experience += experience;
+        context.Update(user);
+
+        if (!bypassSaveChanges)
+            await context.SaveChangesAsync();
     }
 }

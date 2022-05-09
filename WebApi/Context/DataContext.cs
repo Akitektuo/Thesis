@@ -10,7 +10,11 @@ public class DataContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     public DbSet<Badge> Badges { get; set; }
 
+    public DbSet<UserBadge> UserBadges { get; set; }
+
     public DbSet<Course> Courses { get; set; }
+
+    public DbSet<UserCourse> UserCourses { get; set; }
 
     public DbSet<Chapter> Chapters { get; set; }
 

@@ -36,7 +36,9 @@ const UploadInput = ({
                 <Text isBold variant="subtitle2">{label}</Text>
             )}
             <div className={styles.uploadDetails}>
-                <Text>Selected files: <b>{fileNames || <i>None</i>}</b></Text>
+                <Text className={styles.selectedFiles}>
+                    Selected files: <b>{fileNames || <i>None</i>}</b>
+                </Text>
                 <label htmlFor={inputId}>
                     <input
                         className={styles.hidden}

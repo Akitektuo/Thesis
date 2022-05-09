@@ -1,4 +1,8 @@
-import { ChapterDetailsType, PlainChapterType } from "shared/types/chapter-types";
+import { 
+    ChapterDetailsType, 
+    ChapterSolutionResultType, 
+    PlainChapterType 
+} from "shared/types/chapter-types";
 import { BASE_URL } from "./constants";
 import { httpGet, httpPost, httpPut } from "./helper-functions";
 
@@ -15,3 +19,6 @@ export const getAllChapters = (courseId: string) =>
 
 export const getChapter = (chapterId: string) =>
     httpGet<ChapterDetailsType>(`${URL}/${chapterId}`);
+
+export const postChapterSolution = (chapterId: string, fileName: string) =>
+    httpPost<ChapterSolutionResultType>(`${URL}/${chapterId}?fileName=${fileName}`);

@@ -70,13 +70,16 @@ export const toGridItem = (
     previousChapterName: parent?.name
 });
 
-export interface ChapterDetailsType {
+export interface ChapterDetailsType extends ChapterSolutionResultType {
     courseId: string;
     courseName: string;
     chapterName: string;
     points: number;
     filesUrl: string;
     contents: DisplayContentType[];
+}
+
+export interface ChapterSolutionResultType {
     approved: boolean;
     message: string;
 }
