@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebApi.Middlewares;
@@ -22,14 +21,16 @@ public class Startup
 
         services.AddCors(config =>
             config.AddDefaultPolicy(options =>
-                options.AllowAnyOrigin()
+                options.WithOrigins("http://localhost:3000")
                     .AllowAnyMethod()
-                    .AllowAnyHeader()));
+                    .AllowAnyHeader()
+                    .AllowCredentials()));
         services.Configure<ApiBehaviorOptions>(options =>
         {
             options.SuppressModelStateInvalidFilter = true;
         });
         services.AddControllers();
+        services.AddSignalR();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
@@ -58,7 +59,8 @@ public class Startup
 
         app.UseCors();
 
-        app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api/Documents"),
+        app.UseWhen(context => context.Request.Path.StartsWithSegments("/api") &&
+                !context.Request.Path.StartsWithSegments("/api/Documents/"),
             appBuilder => appBuilder.UseMiddleware<MiddlewareHandler>());
         app.UseHttpsRedirection();
 
@@ -70,6 +72,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHub<AchievementHub>("/achievement");
         });
     }
 

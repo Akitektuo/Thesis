@@ -1,6 +1,7 @@
 .gridContainer {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 
     .item {
         margin: 1rem;

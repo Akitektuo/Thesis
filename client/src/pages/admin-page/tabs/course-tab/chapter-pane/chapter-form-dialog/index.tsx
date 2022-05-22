@@ -103,7 +103,7 @@ const ChapterFormDialog = ({ chapter, onSave, onClose }: Props) => {
                 className={styles.input}
                 label="Sample project"
                 acceptWildcard=".zip"
-                defaultValue={chapterEdit.filesPath}
+                defaultValue={chapterEdit.fileName}
                 value={file ? [file] : []}
                 onChange={files => setFile(files[0])}  />
         </Dialog>

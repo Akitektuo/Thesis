@@ -4,6 +4,9 @@ public class DocumentService : IDocumentService
 {
     public bool Delete(string fileName)
     {
+        if (fileName == null)
+            return false;
+
         var filePath = GetFilePath(fileName);
 
         if (!File.Exists(filePath))

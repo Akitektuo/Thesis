@@ -1,6 +1,26 @@
 .achievementPopup {
     border-radius: 1rem;
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 2rem;
+    right: -10rem;
+    padding: 1rem;
+    animation: slidePopup 3s ease-in-out;
+}
+
+@keyframes slidePopup {
+    0% {
+        right: -10rem;
+    }
+
+    10% {
+        right: 2rem;
+    }
+
+    90% {
+        right: 2rem;
+    }
+
+    100% {
+        right: -10rem;
+    }
 }

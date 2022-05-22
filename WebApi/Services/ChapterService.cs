@@ -6,17 +6,20 @@ public class ChapterService : IChapterService
     private readonly IUserService userService;
     private readonly IDocumentService documentService;
     private readonly IEvaluatorService evaluatorService;
+    private readonly IBadgeService badgeService;
 
     public ChapterService(
         DataContext context,
         IUserService userService,
         IDocumentService documentService,
-        IEvaluatorService evaluatorService)
+        IEvaluatorService evaluatorService, 
+        IBadgeService badgeService)
     {
         this.context = context;
         this.userService = userService;
         this.documentService = documentService;
         this.evaluatorService = evaluatorService;
+        this.badgeService = badgeService;
     }
 
     public async Task<List<Chapter>> GetAll(Guid courseId)
@@ -86,7 +89,8 @@ public class ChapterService : IChapterService
 
         userChapter = new UserChapter(userId, chapterId);
 
-        await context.UserChapters.AddAsync(userChapter);
+        await context.AddAsync(userChapter);
+        await badgeService.UnlockBadge(BadgeNames.GettingStarted, true);
         await context.SaveChangesAsync();
 
         return userChapter;
@@ -109,12 +113,12 @@ public class ChapterService : IChapterService
         else if (!userChapter.Approved)
         {
             userChapter.Message = messages;
+            await badgeService.UnlockBadge(BadgeNames.FirstFail, true);
             await UpdateUserChapterAndSetFile(userChapter, fileName);
-            // TODO: Give badge for 'improving by failing'
         }
         else
         {
-            // TODO: Give badge for 'first fail'
+            await badgeService.UnlockBadge(BadgeNames.Perfectionist);
         }
 
         return new SolutionResultModel
@@ -132,8 +136,9 @@ public class ChapterService : IChapterService
 
         await UpdateUserChapterAndSetFile(userChapter, fileName, true);
         await UnlockNextChapters(userChapter.ChapterId, userChapter.UserId);
+        await badgeService.UnlockBadge(BadgeNames.TheFirstWin, true);
+        await UnlockFor5Chapters();
         await userService.IncreaseExperience(chapter.Points, userChapter.UserId);
-        // TODO: Give badge for specific chapter
     }
 
     private async Task UpdateUserChapterAndSetFile(
@@ -153,5 +158,13 @@ public class ChapterService : IChapterService
         var userChaptersToAdd = context.Chapters.Where(chapter => chapter.ParentChapterId == forId)
             .Select(chapter => new UserChapter(userId, chapter.Id));
         await context.AddRangeAsync(userChaptersToAdd);
+    }
+
+    private async Task UnlockFor5Chapters()
+    {
+        var completedChapters = 
+            await context.UserChapters.CountAsync(userChapter => userChapter.Approved);
+        if (completedChapters > 4)
+            await badgeService.UnlockBadge(BadgeNames.GettingIntoIt, true);
     }
 }

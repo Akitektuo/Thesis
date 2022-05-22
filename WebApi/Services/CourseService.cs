@@ -4,11 +4,13 @@ public class CourseService : ICourseService
 {
     private readonly DataContext context;
     private readonly IUserService userService;
+    private readonly IBadgeService badgeService;
 
-    public CourseService(DataContext context, IUserService userService)
+    public CourseService(DataContext context, IUserService userService, IBadgeService badgeService)
     {
         this.context = context;
         this.userService = userService;
+        this.badgeService = badgeService;
     }
 
     public async Task<Course> Create(Course course)
@@ -68,7 +70,7 @@ public class CourseService : ICourseService
 
         await MarkCourseStartedForCurrentUser(id);
 
-        var userChapters = await GetCurrentUserChapters();
+        var userChapters = await GetCurrentUserChapters(id);
 
         (var completed, var total) = GetCompletedAndTotalChapters(userChapters, course.Chapters);
 
@@ -84,11 +86,12 @@ public class CourseService : ICourseService
         };
     }
 
-    private Task<List<UserChapter>> GetCurrentUserChapters()
+    private Task<List<UserChapter>> GetCurrentUserChapters(Guid? courseId = null)
     {
         var userId = userService.GetCurrentUserId();
 
-        return context.UserChapters.Where(userChapter => userChapter.UserId == userId)
+        return context.UserChapters.Where(userChapter => userChapter.UserId == userId &&
+                (courseId == null || userChapter.Chapter.CourseId == courseId))
             .ToListAsync();
     }
 
@@ -96,7 +99,10 @@ public class CourseService : ICourseService
         List<UserChapter> userChapters,
         ICollection<Chapter> chapters)
     {
-        return new(userChapters.Count(userChapter => userChapter.Approved), chapters.Count);
+        return new(userChapters.Where(userChapter => 
+                chapters.Any(chapter => userChapter.ChapterId == chapter.Id))
+                    .Count(userChapter => userChapter.Approved),
+            chapters.Count);
     }
 
     private ChapterNode MapChaptersAsTree(
@@ -162,7 +168,16 @@ public class CourseService : ICourseService
             chapter.CourseId == courseId && chapter.ParentChapterId == null);
 
         await context.AddAsync(new UserChapter(userId, rootChapter.Id));
-        // TODO: Maybe also add a badge 'Oh, what's this? :eyes:'
+        await badgeService.UnlockBadge(BadgeNames.FirstSteps, true);
+        await UnlockForSecondCourse();
+
         await context.SaveChangesAsync();
+    }
+
+    private async Task UnlockForSecondCourse()
+    {
+        var userCourses = await context.UserCourses.CountAsync();
+        if (userCourses > 1)
+            await badgeService.UnlockBadge(BadgeNames.Strategist, true);
     }
 }

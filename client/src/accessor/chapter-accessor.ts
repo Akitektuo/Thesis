@@ -3,10 +3,10 @@ import {
     ChapterSolutionResultType, 
     PlainChapterType 
 } from "shared/types/chapter-types";
-import { BASE_URL } from "./constants";
+import { BASE_URL_API } from "./constants";
 import { httpGet, httpPost, httpPut } from "./helper-functions";
 
-const URL = `${BASE_URL}chapters`;
+const URL = `${BASE_URL_API}chapters`;
 
 export const createChapter = (chapter: PlainChapterType) =>
     httpPost<PlainChapterType>(URL, chapter);

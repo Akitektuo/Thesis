@@ -1,9 +1,9 @@
 import { IdWithPosition } from "shared/types";
 import { PlainContentType } from "shared/types/content-types";
-import { BASE_URL } from "./constants";
+import { BASE_URL_API } from "./constants";
 import { httpDelete, httpGet, httpPost, httpPut } from "./helper-functions";
 
-const URL = `${BASE_URL}contents`;
+const URL = `${BASE_URL_API}contents`;
 
 export const createContent = (content: PlainContentType) =>
     httpPost<PlainContentType>(URL, content);

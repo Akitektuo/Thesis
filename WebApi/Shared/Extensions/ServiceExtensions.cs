@@ -8,4 +8,7 @@ public static class ServiceExtensions
 
         return new Guid(userId?.Value);
     }
+
+    public static bool SelectByName(this Badge badge, BadgeNames name) => 
+        badge.Name.Replace(" ", "").Equals(name.Get(), StringComparison.OrdinalIgnoreCase);
 }

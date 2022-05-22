@@ -11,7 +11,7 @@ export const httpPut = <T>(url: string, body?: any) => genericFetch<T>("PUT", ur
 
 export const httpDelete = <T>(url: string, body?: any) => genericFetch<T>("DELETE", url, body);
 
-const getHeadersWithAuthorization = () => new Headers({ "Authorization": `Bearer ${getToken()}` });
+const getHeadersWithAuthorization = () => new Headers({ "Authorization": `Bearer ${getToken()}`});
 
 const genericFetch = <T>(method: httpMethod, url: string, body?: any) =>
     new Promise<T>(async (resolve, reject) => {

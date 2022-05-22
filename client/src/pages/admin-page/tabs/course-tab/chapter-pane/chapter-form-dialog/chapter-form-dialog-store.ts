@@ -69,7 +69,7 @@ export class ChapterFormDialogStore {
         try {
             if (this.file) {
                 const fileName = await uploadDocument(this.file);
-                runInAction(() => this.chapterEdit.filesPath = fileName);
+                runInAction(() => this.chapterEdit.fileName = fileName);
             }
 
             const result = await apiCall(toPlainChapter(this.chapterEdit));

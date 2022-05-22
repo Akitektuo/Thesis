@@ -1,8 +1,8 @@
 import { UserDashboardType } from "shared/types/user-types";
-import { BASE_URL } from "./constants";
+import { BASE_URL_API } from "./constants";
 import { httpGet } from "./helper-functions";
 
-const URL = `${BASE_URL}user`;
+const URL = `${BASE_URL_API}user`;
 
 export const isAdmin = () => httpGet<boolean>(`${URL}/isAdmin`);
 

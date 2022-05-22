@@ -8,17 +8,20 @@ public class UserService : IUserService
     private readonly IConfiguration configuration;
     private readonly IHttpContextAccessor httpAccessor;
     private readonly DataContext context;
+    private readonly IServiceProvider serviceProvider;
 
     public UserService(
         UserManager<User> userManager,
         IConfiguration configuration,
         IHttpContextAccessor httpAccessor,
-        DataContext context)
+        DataContext context,
+        IServiceProvider serviceProvider)
     {
         this.userManager = userManager;
         this.configuration = configuration;
         this.httpAccessor = httpAccessor;
         this.context = context;
+        this.serviceProvider = serviceProvider;
     }
 
     public Guid GetCurrentUserId() => httpAccessor.GetUserId();
@@ -44,11 +47,16 @@ public class UserService : IUserService
         if (user == null)
             return null;
 
-        var isPasswordCorrect = await userManager.CheckPasswordAsync(user, loginUserModel.Password);
+        var isPasswordCorrect = await userManager.CheckPasswordAsync(
+            user, loginUserModel.Password);
         if (!isPasswordCorrect)
             return null;
 
-        return GenerateJwtToken(user);
+        var token = GenerateJwtToken(user);
+
+        await UnlockFirstLoginBadge(user.Id);
+
+        return token;
     }
 
     public async Task Register(RegisterUserModel registerUserModel)
@@ -133,7 +141,60 @@ public class UserService : IUserService
         user.Experience += experience;
         context.Update(user);
 
+        await UnlockBadgesForLevel(user.Experience);
+
         if (!bypassSaveChanges)
             await context.SaveChangesAsync();
+    }
+
+    private async Task UnlockFirstLoginBadge(Guid userId)
+    {
+        using var scope = serviceProvider.CreateAsyncScope();
+        var badgeService = scope.ServiceProvider.GetRequiredService<IBadgeService>();
+        await badgeService.UnlockBadge(BadgeNames.NewExperience, notLoggedUserId: userId);
+    }
+
+    private async Task UnlockBadgesForLevel(int experience)
+    {
+        var level = (experience / 100).Sqrt() + 1;
+        if (level < 2)
+            return;
+
+        using var scope = serviceProvider.CreateAsyncScope();
+        var badgeService = scope.ServiceProvider.GetRequiredService<IBadgeService>();
+
+        await badgeService.UnlockBadge(BadgeNames.Level2, true);
+
+        if (level < 3)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level3, true);
+
+        if (level < 4)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level4, true);
+
+        if (level < 5)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level5, true);
+
+        if (level < 6)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level6, true);
+
+        if (level < 7)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level7, true);
+
+        if (level < 8)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level8, true);
+
+        if (level < 9)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.Level9, true);
+
+        if (level < 10)
+            return;
+        await badgeService.UnlockBadge(BadgeNames.TheTop, true);
     }
 }

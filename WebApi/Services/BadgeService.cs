@@ -4,11 +4,16 @@ public class BadgeService : IBadgeService
 {
     private readonly DataContext context;
     private readonly IUserService userService;
+    private readonly IHubContext<AchievementHub> hub;
 
-    public BadgeService(DataContext context, IUserService userService)
+    public BadgeService(
+        DataContext context, 
+        IUserService userService, 
+        IHubContext<AchievementHub> hub)
     {
         this.context = context;
         this.userService = userService;
+        this.hub = hub;
     }
 
     public async Task<Badge> Create(Badge badge)
@@ -43,6 +48,42 @@ public class BadgeService : IBadgeService
             .OrderBy(badge => badge.Name)
             .ThenByDescending(badge => badge.Unlocked)
             .ToList();
+    }
+
+    public Task Test() => hub.Clients.All.SendAsync("new", new DisplayBadgeModel(new()
+    {
+        Id = Guid.NewGuid(),
+        Name = "New experience",
+        Image = "https://img.icons8.com/cute-clipart/256/000000/1-circle-c.png",
+        Points = 50
+    }, true));
+
+    public async Task<bool> UnlockBadge(
+        BadgeNames name, 
+        bool bypassSaveChanges = false, 
+        Guid? notLoggedUserId = null)
+    {
+        var badges = await context.Badges.ToListAsync();
+        var badge = badges.FirstOrDefault(badge => badge.SelectByName(name));
+        if (badge == null)
+            return false;
+
+        var userId = notLoggedUserId ?? userService.GetCurrentUserId();
+        var isBadgeUnlocked = await context.UserBadges.AnyAsync(userBadge =>
+            userBadge.UserId == userId && userBadge.BadgeId == badge.Id);
+        if (isBadgeUnlocked)
+            return false;
+
+        await context.AddAsync(new UserBadge
+        {
+            UserId = userId,
+            BadgeId = badge.Id,
+        });
+        await userService.IncreaseExperience(badge.Points, userId, bypassSaveChanges);
+
+        await hub.Clients.All.SendAsync("new", new DisplayBadgeModel(badge, true));
+
+        return true;
     }
 
     public async Task<Badge> Update(Badge badge)

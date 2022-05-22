@@ -46,9 +46,9 @@ export class ChapterPageStore {
 
         try {
             const fileName = await uploadDocument(file);
-
             const { approved, message } = await postChapterSolution(chapterId, fileName);
 
+            this.closeUploadDialog();
             toastService.showSuccess("Your solution was uploaded!");
             runInAction(() => {
                 if (!this.chapterDetails)

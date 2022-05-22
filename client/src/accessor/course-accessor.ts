@@ -1,8 +1,8 @@
 import { CourseDetailsType, DisplayCourseType, PlainCourseType } from "shared/types/course-types";
-import { BASE_URL } from "./constants";
+import { BASE_URL_API } from "./constants";
 import { httpGet, httpPost, httpPut } from "./helper-functions";
 
-const URL = `${BASE_URL}courses`;
+const URL = `${BASE_URL_API}courses`;
 
 export const createCourse = (course: PlainCourseType) => httpPost<PlainCourseType>(URL, course);
 

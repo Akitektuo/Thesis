@@ -10,6 +10,8 @@ public class UserChapter
 
     public virtual User User { get; set; }
 
+    public virtual Chapter Chapter { get; set; }
+
     public string FileName { get; set; }
 
     public bool Approved { get; set; }

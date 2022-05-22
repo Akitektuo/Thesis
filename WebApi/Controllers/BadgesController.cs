@@ -47,4 +47,13 @@ public class BadgesController : ControllerBase
 
         return Ok(allBadges);
     }
+
+    [AllowAnonymous]
+    [HttpGet("test")]
+    public async Task<IActionResult> GetTest()
+    {
+        await badgeService.Test();
+
+        return Ok();
+    }
 }

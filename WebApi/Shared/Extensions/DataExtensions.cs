@@ -51,4 +51,6 @@ public static class DataExtensions
             return null;
         }
     }
+
+    public static string Get(this BadgeNames names) => Enum.GetName(names);
 }

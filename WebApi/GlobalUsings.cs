@@ -3,8 +3,10 @@ global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.IdentityModel.Tokens;
 
@@ -22,6 +24,7 @@ global using System.Threading.Tasks;
 global using WebApi.Aggregators;
 global using WebApi.Context;
 global using WebApi.Exceptions;
+global using WebApi.Hubs;
 global using WebApi.Models;
 global using WebApi.Services;
 global using WebApi.Shared;

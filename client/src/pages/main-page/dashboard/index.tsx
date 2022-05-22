@@ -11,7 +11,6 @@ import {
 import { useAuthentication, useUserInformation } from "infrastructure";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router";
-import { DisplayBadgeType } from "shared/types/badge-types";
 import BadgeList from "./badge-list";
 import styles from "./user-dashboard.module.scss";
 import AdminPanelIcon from "@mui/icons-material/AdminPanelSettingsSharp";
@@ -20,38 +19,6 @@ import { ROUTE_ADMIN, ROUTE_BADGES } from "pages/routes/constants";
 interface Props {
     className?: string;
 }
-
-const badges: DisplayBadgeType[] = [{
-    name: "Test",
-    image: "https://img.icons8.com/stickers/256/000000/test-passed.png",
-    points: 100,
-    unlocked: true
-}, {
-    name: "Test",
-    image: "https://img.icons8.com/stickers/256/000000/test-passed.png",
-    points: 100,
-    unlocked: true
-}, {
-    name: "Test",
-    image: "https://img.icons8.com/stickers/256/000000/test-passed.png",
-    points: 100,
-    unlocked: true
-}, {
-    name: "Test",
-    image: "https://img.icons8.com/stickers/256/000000/test-passed.png",
-    points: 100,
-    unlocked: true
-}, {
-    name: "Test",
-    image: "https://img.icons8.com/stickers/256/000000/test-passed.png",
-    points: 100,
-    unlocked: true
-}, {
-    name: "Test",
-    image: "https://img.icons8.com/stickers/256/000000/test-passed.png",
-    points: 100,
-    unlocked: true
-}];
 
 const UserDashBoard = ({ className }: Props) => {
     const navigate = useNavigate();
@@ -67,7 +34,7 @@ const UserDashBoard = ({ className }: Props) => {
                     <LevelIndicator {...userDashboard} />
                 </div>
                 <div className={styles.badgesAndActions}>
-                    <BadgeList badges={badges} />
+                    <BadgeList badges={userDashboard.topBadges} />
                     <div className={styles.actions}>
                         <Button
                             variant="outlined"
