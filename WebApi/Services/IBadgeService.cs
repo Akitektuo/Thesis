@@ -10,7 +10,7 @@ public interface IBadgeService
 
     Task<Badge> Update(Badge badge);
 
-    Task<bool> UnlockBadge(BadgeNames name, bool bypassSaveChanges = false, Guid? notLoggedUserId = null);
+    Task<bool> UnlockBadge(BadgeNames name, Guid? notLoggedUserId = null);
 
     Task Test();
 }

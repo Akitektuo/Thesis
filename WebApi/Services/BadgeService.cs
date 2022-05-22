@@ -58,10 +58,7 @@ public class BadgeService : IBadgeService
         Points = 50
     }, true));
 
-    public async Task<bool> UnlockBadge(
-        BadgeNames name, 
-        bool bypassSaveChanges = false, 
-        Guid? notLoggedUserId = null)
+    public async Task<bool> UnlockBadge(BadgeNames name, Guid? notLoggedUserId = null)
     {
         var badges = await context.Badges.ToListAsync();
         var badge = badges.FirstOrDefault(badge => badge.SelectByName(name));
@@ -74,12 +71,14 @@ public class BadgeService : IBadgeService
         if (isBadgeUnlocked)
             return false;
 
-        await context.AddAsync(new UserBadge
+        var userBadge = new UserBadge
         {
             UserId = userId,
             BadgeId = badge.Id,
-        });
-        await userService.IncreaseExperience(badge.Points, userId, bypassSaveChanges);
+        };
+        var t = await context.AddAsync(userBadge);
+        await context.SaveChangesAsync();
+        await userService.IncreaseExperience(badge.Points, userId);
 
         await hub.Clients.All.SendAsync("new", new DisplayBadgeModel(badge, true));
 

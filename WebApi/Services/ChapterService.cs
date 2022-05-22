@@ -90,7 +90,7 @@ public class ChapterService : IChapterService
         userChapter = new UserChapter(userId, chapterId);
 
         await context.AddAsync(userChapter);
-        await badgeService.UnlockBadge(BadgeNames.GettingStarted, true);
+        await badgeService.UnlockBadge(BadgeNames.GettingStarted);
         await context.SaveChangesAsync();
 
         return userChapter;
@@ -113,7 +113,7 @@ public class ChapterService : IChapterService
         else if (!userChapter.Approved)
         {
             userChapter.Message = messages;
-            await badgeService.UnlockBadge(BadgeNames.FirstFail, true);
+            await badgeService.UnlockBadge(BadgeNames.FirstFail);
             await UpdateUserChapterAndSetFile(userChapter, fileName);
         }
         else
@@ -136,7 +136,7 @@ public class ChapterService : IChapterService
 
         await UpdateUserChapterAndSetFile(userChapter, fileName, true);
         await UnlockNextChapters(userChapter.ChapterId, userChapter.UserId);
-        await badgeService.UnlockBadge(BadgeNames.TheFirstWin, true);
+        await badgeService.UnlockBadge(BadgeNames.TheFirstWin);
         await UnlockFor5Chapters();
         await userService.IncreaseExperience(chapter.Points, userChapter.UserId);
     }
@@ -165,6 +165,6 @@ public class ChapterService : IChapterService
         var completedChapters = 
             await context.UserChapters.CountAsync(userChapter => userChapter.Approved);
         if (completedChapters > 4)
-            await badgeService.UnlockBadge(BadgeNames.GettingIntoIt, true);
+            await badgeService.UnlockBadge(BadgeNames.GettingIntoIt);
     }
 }

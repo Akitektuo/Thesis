@@ -168,7 +168,7 @@ public class CourseService : ICourseService
             chapter.CourseId == courseId && chapter.ParentChapterId == null);
 
         await context.AddAsync(new UserChapter(userId, rootChapter.Id));
-        await badgeService.UnlockBadge(BadgeNames.FirstSteps, true);
+        await badgeService.UnlockBadge(BadgeNames.FirstSteps);
         await UnlockForSecondCourse();
 
         await context.SaveChangesAsync();
@@ -178,6 +178,6 @@ public class CourseService : ICourseService
     {
         var userCourses = await context.UserCourses.CountAsync();
         if (userCourses > 1)
-            await badgeService.UnlockBadge(BadgeNames.Strategist, true);
+            await badgeService.UnlockBadge(BadgeNames.Strategist);
     }
 }

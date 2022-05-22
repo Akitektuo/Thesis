@@ -163,38 +163,46 @@ public class UserService : IUserService
         using var scope = serviceProvider.CreateAsyncScope();
         var badgeService = scope.ServiceProvider.GetRequiredService<IBadgeService>();
 
-        await badgeService.UnlockBadge(BadgeNames.Level2, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level2))
+            return;
 
         if (level < 3)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level3, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level3))
+            return;
 
         if (level < 4)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level4, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level4))
+            return;
 
         if (level < 5)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level5, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level5))
+            return;
 
         if (level < 6)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level6, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level6))
+            return;
 
         if (level < 7)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level7, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level7))
+            return;
 
         if (level < 8)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level8, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level8))
+            return;
 
         if (level < 9)
             return;
-        await badgeService.UnlockBadge(BadgeNames.Level9, true);
+        if (await badgeService.UnlockBadge(BadgeNames.Level9))
+            return;
 
         if (level < 10)
             return;
-        await badgeService.UnlockBadge(BadgeNames.TheTop, true);
+        await badgeService.UnlockBadge(BadgeNames.TheTop);
     }
 }
