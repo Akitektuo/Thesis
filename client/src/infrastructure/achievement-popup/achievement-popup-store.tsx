@@ -17,6 +17,7 @@ export class AchievementPopupStore {
             return;
 
         this.hubConnection = new HubConnectionBuilder().withUrl(`${BASE_URL}/achievement`)
+            .withAutomaticReconnect()
             .build();
         
         this.startWebSocket();
