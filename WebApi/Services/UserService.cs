@@ -79,11 +79,11 @@ public class UserService : IUserService
     private string GenerateJwtToken(User user)
     {
         var authenticationClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
         var authenticationSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(configuration[Constants.JwtSecret]));
@@ -95,8 +95,7 @@ public class UserService : IUserService
             claims: authenticationClaims,
             signingCredentials: new SigningCredentials(
                 authenticationSigningKey,
-                SecurityAlgorithms.HmacSha256)
-        );
+                SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
