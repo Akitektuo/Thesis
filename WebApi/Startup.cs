@@ -60,7 +60,7 @@ public class Startup
         app.UseCors();
 
         app.UseWhen(context => context.Request.Path.StartsWithSegments("/api") &&
-                !context.Request.Path.StartsWithSegments("/api/Documents/"),
+                !context.Request.Path.StartsWithSegments("/api/Documents"),
             appBuilder => appBuilder.UseMiddleware<MiddlewareHandler>());
         app.UseHttpsRedirection();
 
