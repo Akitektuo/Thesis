@@ -2,5 +2,5 @@
 
 public interface IEvaluatorService
 {
-    List<string> Evaluate(string fileName);
+    List<string> Evaluate(string fileName, string ruleSet);
 }

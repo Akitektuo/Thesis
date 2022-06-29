@@ -1,4 +1,7 @@
 fun main(args: Array<String>) {
-    val text = args.firstOrNull() ?: ""
-    println("Text length: ${text.length}")
+    val filePath = args.firstOrNull()
+    if (filePath.isNullOrBlank())
+        return
+
+    println(Controller.processFile(filePath.trim(), if (args.size > 1) args[1].trim() else ""))
 }

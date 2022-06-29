@@ -5,6 +5,7 @@ div.solutionResultContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    white-space: break-spaces;
     background-color: $error;
 
     &.greenBackground {

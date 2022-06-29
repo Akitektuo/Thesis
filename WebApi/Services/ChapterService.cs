@@ -103,7 +103,8 @@ public class ChapterService : IChapterService
         if (userChapter == null)
             return null;
 
-        var evaluationMessages = evaluatorService.Evaluate(fileName);
+        var evaluationMessages = 
+            evaluatorService.Evaluate(documentService.Get(fileName), GetRuleSet(chapterId));
 
         var approved = !evaluationMessages.Any();
         var messages = string.Join("\n\n", evaluationMessages);
@@ -166,5 +167,16 @@ public class ChapterService : IChapterService
             await context.UserChapters.CountAsync(userChapter => userChapter.Approved);
         if (completedChapters > 4)
             await badgeService.UnlockBadge(BadgeNames.GettingIntoIt);
+    }
+
+    private string GetRuleSet(Guid chapterId)
+    {
+        if (chapterId == new Guid("568619E2-0065-4577-EF0F-08DA3BF1CB69"))
+            return "OBJECTS";
+
+        if (chapterId == new Guid("BD274A1E-9163-4480-EF10-08DA3BF1CB69"))
+            return "OBJECT_METHODS";
+
+        return "NO_CLASSES";
     }
 }
