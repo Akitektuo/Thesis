@@ -15,7 +15,7 @@ class Analyzer(private val analysisTree: AnalysisTree, private val rule: RuleLoa
 
     private fun runNoClassesAnalysis(): ArrayList<String> {
         val functionDeclarationRegex =
-            Regex("\\s+static void \\w+\\(ArrayList<Integer> \\w+, (int|Integer) \\w+, (int|Integer) \\w+, (int|Integer) \\w+\\)\\s*\\{(\\s|.)*?}")
+            Regex("\\s+static void \\w+\\((int|Integer)\\[] \\w+, (int|Integer) \\w+, (int|Integer) \\w+, (int|Integer) \\w+\\)\\s*\\{(\\s|.)*?}")
         val listAccessorRegex = Regex("\\s+\\w+\\[\\w+]")
         val additionRegex = Regex("\\+")
         val subtractionRegex = Regex("-")
